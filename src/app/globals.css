@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+  --google-blue: #1a0dab;
+  --google-green: #006621;
+  --google-red: #ea4335;
+  --google-yellow: #fbbc05;
+  --google-blue-logo: #4285f4;
+  --google-green-logo: #34a853;
+  --google-gray: #70757a;
+  --google-light-gray: #f8f9fa;
+  --google-border: #dfe1e5;
+  --google-hover-bg: #f1f3f4;
+  --google-snippet: #4d5156;
+  --google-sponsored-bg: #f1f3f4;
+  --bg: #ffffff;
+  --text: #202124;
+  --text-secondary: #70757a;
+  --border: #dfe1e5;
+  --hover-bg: #f1f3f4;
+  --search-bg: #ffffff;
+  --search-border: #dfe1e5;
+  --search-shadow: rgba(32, 33, 36, 0.28);
+  --knowledge-bg: #ffffff;
+  --knowledge-border: #dfe1e5;
+  --sponsored-bg: #f1f3f4;
+  --footer-bg: #f2f2f2;
+  --footer-border: #dadce0;
+}
+
+[data-theme="dark"] {
+  --google-blue: #8ab4f8;
+  --google-green: #bdc1c6;
+  --google-gray: #9aa0a6;
+  --google-snippet: #bdc1c6;
+  --google-sponsored-bg: #303134;
+  --bg: #202124;
+  --text: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --border: #3c4043;
+  --hover-bg: #303134;
+  --search-bg: #303134;
+  --search-border: #5f6368;
+  --search-shadow: rgba(0, 0, 0, 0.5);
+  --knowledge-bg: #303134;
+  --knowledge-border: #3c4043;
+  --sponsored-bg: #303134;
+  --footer-bg: #171717;
+  --footer-border: #3c4043;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  text-decoration: none;
+}
+
+::selection {
+  background-color: var(--google-blue-logo);
+  color: white;
+}
