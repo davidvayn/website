@@ -11,35 +11,35 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "project-1",
-    title: "E-Commerce Platform - Full-Stack Web Application",
-    url: "dvayn.com › projects › e-commerce-platform",
+    title: "Analysis of Machine Learning Methods with Regression",
+    url: "dvayn.com › projects › ml-analysis",
     snippet:
-      "A full-stack e-commerce platform built with <b>Next.js</b>, <b>TypeScript</b>, and <b>Stripe</b> integration. Features include real-time inventory management, user authentication, and responsive design.",
-    tags: ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
-    image: "/placeholder-project-1.svg",
+      "Analyzed classification models using <b>Jupyter Notebook</b>, <b>Python</b> (NumPy, Pandas), and <b>Regression</b> (SVM, KNN).",
+    tags: ["Python", "Jupyter", "Machine Learning", "NumPy", "Pandas"],
+    image: "/placeholder-ml.svg",
     details:
-      "Built a complete e-commerce solution featuring product catalog management, shopping cart functionality, Stripe payment processing, and an admin dashboard. Implemented server-side rendering for SEO optimization and integrated PostgreSQL for data persistence.",
+      "Aug 2022 - Mar 2024. Analyzed classification models: Decision Trees, Logistic Regression, SVM, and KNN. Used NumPy and Pandas for data visualization and handling. Wrote a 20-page paper analyzing algorithm effectiveness based on multivariable datasets influencing income.",
   },
   {
     id: "project-2",
-    title: "Real-Time Chat Application - WebSocket Messaging",
-    url: "dvayn.com › projects › realtime-chat",
+    title: "Inventory Management System",
+    url: "dvayn.com › projects › inventory-system",
     snippet:
-      "A real-time messaging application using <b>React</b>, <b>Node.js</b>, and <b>WebSockets</b>. Supports group chats, file sharing, and end-to-end message delivery tracking.",
-    tags: ["React", "Node.js", "WebSocket", "MongoDB"],
-    image: "/placeholder-project-2.svg",
+      "RESTful API for inventory management built with <b>Java Spring Boot</b> and <b>MySQL</b>.",
+    tags: ["Java", "Spring Boot", "MySQL", "REST API"],
+    image: "/placeholder-inventory.svg",
     details:
-      "Developed a scalable real-time chat application with WebSocket-based communication, supporting multiple chat rooms, file uploads, typing indicators, and message read receipts. Used MongoDB for message persistence and Redis for session management.",
+      "Jun 2025 - Jul 2025. Individually designed a RESTful inventory management API using Java Spring Boot. Implemented CRUD functionality, category-based filtering, and integration with MySQL for persistence.",
   },
   {
     id: "project-3",
-    title: "Task Management Dashboard - Project Tracking Tool",
-    url: "dvayn.com › projects › task-dashboard",
+    title: "Task Terry - Schedule Management App",
+    url: "dvayn.com › projects › task-terry",
     snippet:
-      "A project management dashboard built with <b>React</b> and <b>Node.js</b>. Features drag-and-drop task boards, team collaboration tools, and automated workflow notifications.",
-    tags: ["React", "Node.js", "REST API", "Tailwind CSS"],
-    image: "/placeholder-project-3.svg",
+      "Full-stack schedule management app using <b>C++</b>, <b>Node.js/Express</b>, and <b>React + Tailwind CSS</b>.",
+    tags: ["C++", "Node.js", "React", "Tailwind CSS", "Express"],
+    image: "/placeholder-task-terry.svg",
     details:
-      "Created a Kanban-style project management tool with drag-and-drop task organization, team member assignment, deadline tracking, and email notifications. Built a RESTful API backend with JWT authentication and role-based access control.",
+      "Apr 2025 - Jun 2025. Developed a full-stack schedule management web app using C++ backend integrated with Node.js/Express and a React + Tailwind CSS frontend. Applied Agile and SOLID principles. Implemented unit tests using Google Test for high reliability across C++-JS communication.",
   },
 ];

@@ -7,16 +7,21 @@ export const faqs: FAQ[] = [
   {
     question: "What technologies does David Vayntrub use?",
     answer:
-      "David works with TypeScript, React, Next.js, Node.js, Python, PostgreSQL, MongoDB, Tailwind CSS, and various cloud services including AWS and Vercel. He is experienced in both frontend and backend development.",
+      "David is proficient in Python, TypeScript, JavaScript, Java, C++, and SQL. He works extensively with frameworks like Next.js, React, and Node.js/Express, and tools like Supabase, Convex, and Tailwind CSS. He also has specialized experience with AI tools like Anthropic LLM, LlamaParse, and Whisper C++.",
   },
   {
-    question: "Is David Vayntrub available for hire?",
+    question: "Where does David Vayntrub go to school?",
     answer:
-      "Yes! David is currently open to new opportunities. You can reach him at vayntrub2006@gmail.com or connect with him on LinkedIn for full-time, contract, or freelance roles.",
+      "David is currently pursuing a degree in Computer Science at the University of California, Riverside (UCR), with an expected graduation in 2027.",
   },
   {
-    question: "What is David Vayntrub's experience?",
+    question: "What is David Vayntrub's specialized experience?",
     answer:
-      "David is a Full-Stack Developer with 3 years of professional experience building web applications. He has worked at both startups and established tech companies, specializing in React, Node.js, and TypeScript.",
+      "David specializes in AI integration, full-stack development, and real-time systems. His recent work includes cofounding StudySpot (an AI study tool), developing voice-controlled hardware at ACM Riverside, and building AI-based platforms at various hackathons like Citrus Hack and Cutie Hack.",
+  },
+  {
+    question: "How can I contact David Vayntrub?",
+    answer:
+      "You can reach David via email at vayntrub2006@gmail.com or by phone at 415-465-0222. He is also active on LinkedIn and GitHub for professional collaborations.",
   },
 ];

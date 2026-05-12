@@ -27,13 +27,36 @@ export default function OrganicResult({
         </span>
       </div>
 
-      <h3 className="text-xl mb-1">
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-left hover:underline cursor-pointer"
+      <h3 className="text-xl mb-1 flex items-center group">
+        <a
+          href={`https://${url.split(" › ").join("/")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline"
           style={{ color: "var(--google-blue)" }}
+          onClick={(e) => {
+            // Prevent navigation for demo purposes if needed, 
+            // but the user said they "don't work at all" which usually means they want links.
+            // For now, let's just make them real links.
+          }}
         >
           {title}
+        </a>
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="ml-2 p-1 rounded-full opacity-0 group-hover:opacity-100 hover:bg-[var(--hover-bg)] transition-opacity"
+          aria-label={expanded ? "Collapse details" : "Expand details"}
+          style={{ color: "var(--text-secondary)" }}
+        >
+          <svg
+            className={`w-4 h-4 transition-transform ${expanded ? "rotate-180" : ""}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
         </button>
       </h3>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import { SearchProvider, useSearch } from "@/hooks/useSearch";
 import GoogleHeader from "@/components/GoogleHeader";
 import SponsoredResult from "@/components/SponsoredResult";
@@ -147,7 +147,9 @@ function SearchResults() {
 export default function Home() {
   return (
     <SearchProvider>
-      <SearchResults />
+      <Suspense fallback={null}>
+        <SearchResults />
+      </Suspense>
     </SearchProvider>
   );
 }
