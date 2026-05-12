@@ -146,10 +146,10 @@ function SearchResults() {
 
 export default function Home() {
   return (
-    <SearchProvider>
-      <Suspense fallback={null}>
+    <Suspense fallback={null}>
+      <SearchProvider>
         <SearchResults />
-      </Suspense>
-    </SearchProvider>
+      </SearchProvider>
+    </Suspense>
   );
 }

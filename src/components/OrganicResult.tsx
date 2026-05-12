@@ -34,7 +34,7 @@ export default function OrganicResult({
           rel="noopener noreferrer"
           className="hover:underline"
           style={{ color: "var(--google-blue)" }}
-          onClick={(e) => {
+          onClick={() => {
             // Prevent navigation for demo purposes if needed, 
             // but the user said they "don't work at all" which usually means they want links.
             // For now, let's just make them real links.

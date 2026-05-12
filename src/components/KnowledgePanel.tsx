@@ -55,7 +55,7 @@ export default function KnowledgePanel() {
       >
         <InfoRow label="Location" value="San Francisco, CA" />
         <InfoRow label="Experience" value="3 years" />
-        <InfoRow label="Education" value="Placeholder University" />
+        <InfoRow label="Education" value="University of California, Riverside" />
         <InfoRow label="Focus" value="Full-Stack Web Development" />
       </div>
 
