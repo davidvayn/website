@@ -24,10 +24,10 @@ export default function GoogleHeader() {
         borderColor: "var(--border)",
       }}
     >
-      <div className="flex items-center gap-6 px-6 lg:px-8 pb-3">
+      <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-8 pb-3">
         <Link
           href="/"
-          className="text-2xl font-bold tracking-tight flex-shrink-0"
+          className="text-xl md:text-2xl font-bold tracking-tight flex-shrink-0"
           style={{ fontFamily: "'Product Sans', arial, sans-serif" }}
         >
           <span style={{ color: "#4285f4" }}>D</span>
@@ -37,14 +37,14 @@ export default function GoogleHeader() {
           <span style={{ color: "#34a853" }}>n</span>
         </Link>
 
-        <div className="flex-1 max-w-[692px]">
+        <div className="flex-1 max-w-[692px] min-w-0">
           <SearchBar />
         </div>
 
-        <div className="flex items-center gap-3 ml-auto">
+        <div className="flex items-center gap-1 md:gap-3 ml-auto">
           <button
             onClick={toggle}
-            className="p-2 rounded-full hover:bg-[var(--hover-bg)] transition-colors"
+            className="p-1.5 md:p-2 rounded-full hover:bg-[var(--hover-bg)] transition-colors"
             aria-label="Toggle dark mode"
             title={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
@@ -60,16 +60,23 @@ export default function GoogleHeader() {
           </button>
 
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-medium flex-shrink-0"
-            style={{ backgroundColor: "#4285f4" }}
+            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: "var(--hover-bg)" }}
             title="David Vayntrub"
           >
-            DV
+            <svg
+              className="w-5 h-5"
+              style={{ color: "var(--text-secondary)" }}
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+            </svg>
           </div>
         </div>
       </div>
 
-      <nav className="flex gap-1 px-6 lg:px-[180px]">
+      <nav className="flex gap-1 px-4 md:px-6 lg:px-[180px]">
         {NAV_TABS.map((tab) => (
           <button
             key={tab.filter}

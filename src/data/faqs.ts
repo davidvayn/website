@@ -19,9 +19,4 @@ export const faqs: FAQ[] = [
     answer:
       "David specializes in AI integration, full-stack development, and real-time systems. His recent work includes cofounding StudySpot (an AI study tool), developing voice-controlled hardware at ACM Riverside, and building AI-based platforms at various hackathons like Citrus Hack and Cutie Hack.",
   },
-  {
-    question: "How can I contact David Vayntrub?",
-    answer:
-      "You can reach David via email at vayntrub2006@gmail.com or by phone at 415-465-0222. He is also active on LinkedIn and GitHub for professional collaborations.",
-  },
 ];

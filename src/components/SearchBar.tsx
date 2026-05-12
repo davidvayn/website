@@ -78,7 +78,7 @@ export default function SearchBar() {
   return (
     <div ref={containerRef} className="relative w-full max-w-[692px]">
       <div
-        className="flex items-center rounded-full border px-4 py-3 hover:shadow-md transition-shadow"
+        className="flex items-center rounded-full border px-4 py-2 md:py-3 hover:shadow-md transition-shadow"
         style={{
           backgroundColor: "var(--search-bg)",
           borderColor: "var(--search-border)",

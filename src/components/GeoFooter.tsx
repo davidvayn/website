@@ -9,7 +9,7 @@ export default function GeoFooter() {
         borderColor: "var(--footer-border)",
       }}
     >
-      <div className="px-6 lg:px-8 py-3">
+      <div className="px-4 md:px-6 lg:px-8 py-3">
         <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
           San Francisco, California - based on your location
         </p>
@@ -20,7 +20,7 @@ export default function GeoFooter() {
         style={{ borderColor: "var(--footer-border)" }}
       />
 
-      <div className="px-6 lg:px-8 py-3 flex flex-wrap gap-x-6 gap-y-2 justify-between">
+      <div className="px-4 md:px-6 lg:px-8 py-3 flex flex-wrap gap-x-6 gap-y-2 justify-between">
         <div className="flex flex-wrap gap-x-6 gap-y-1">
           <FooterLink href="mailto:vayntrub2006@gmail.com" label="Contact" />
           <FooterLink href="https://github.com/davidvayn" label="GitHub" />
@@ -31,7 +31,6 @@ export default function GeoFooter() {
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-1">
           <FooterLink href="/resume.pdf" label="Resume" />
-          <FooterLink href="tel:415-465-0222" label="(415) 465-0222" />
         </div>
       </div>
     </footer>

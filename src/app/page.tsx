@@ -35,17 +35,36 @@ function SearchResults() {
     [lowerQuery, isBroadSearch]
   );
 
-  const filteredExperiences = useMemo(
-    () =>
-      isBroadSearch
-        ? experiences
-        : experiences.filter(
-            (e) =>
-              e.title.toLowerCase().includes(lowerQuery) ||
-              e.snippet.toLowerCase().includes(lowerQuery)
-          ),
-    [lowerQuery, isBroadSearch]
-  );
+  const filteredExperiences = useMemo(() => {
+    const exps = isBroadSearch
+      ? experiences
+      : experiences.filter(
+          (e) =>
+            e.title.toLowerCase().includes(lowerQuery) ||
+            e.snippet.toLowerCase().includes(lowerQuery)
+        );
+
+    // Only include the first hackathon found while maintaining order
+    let hackathonFound = false;
+    const result: typeof experiences = [];
+
+    for (const e of exps) {
+      const isHackathon =
+        e.title.toLowerCase().includes("hack") ||
+        e.details.toLowerCase().includes("hackathon");
+
+      if (isHackathon) {
+        if (!hackathonFound) {
+          result.push(e);
+          hackathonFound = true;
+        }
+      } else {
+        result.push(e);
+      }
+    }
+
+    return result;
+  }, [lowerQuery, isBroadSearch]);
 
   const showAll = activeFilter === "all";
   const showImages = activeFilter === "all" || activeFilter === "images";
@@ -58,18 +77,17 @@ function SearchResults() {
     <div className="min-h-screen flex flex-col">
       <GoogleHeader />
 
-      <main className="flex-1 px-6 lg:px-[180px] py-5">
+      <main className="flex-1 px-4 md:px-6 lg:px-[180px] py-5">
         <p className="text-sm mb-5" style={{ color: "var(--text-secondary)" }}>
           About {resultCount + 3} results (0.42 seconds)
         </p>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
           <div className="flex-1 min-w-0">
             {!hasResults && (
               <div className="mb-6">
                 <p className="text-base" style={{ color: "var(--text)" }}>
-                  No results found for{" "}
-                  <b>&ldquo;{query}&rdquo;</b>
+                  No results found for <b>&ldquo;{query}&rdquo;</b>
                 </p>
                 <p
                   className="text-sm mt-2"
@@ -97,6 +115,22 @@ function SearchResults() {
 
             {showAll && <SponsoredResult />}
 
+            {filteredExperiences.length > 0 && showAll && (
+              <>
+                {filteredExperiences.map((exp) => (
+                  <OrganicResult
+                    key={exp.id}
+                    title={exp.title}
+                    url={exp.url}
+                    snippet={exp.snippet}
+                    details={exp.details}
+                  />
+                ))}
+              </>
+            )}
+
+            {showImages && <ImagesRow />}
+
             {filteredProjects.length > 0 && showAll && (
               <>
                 {filteredProjects.map((project) => (
@@ -107,22 +141,6 @@ function SearchResults() {
                     snippet={project.snippet}
                     details={project.details}
                     tags={project.tags}
-                  />
-                ))}
-              </>
-            )}
-
-            {showImages && <ImagesRow />}
-
-            {filteredExperiences.length > 0 && showAll && (
-              <>
-                {filteredExperiences.map((exp) => (
-                  <OrganicResult
-                    key={exp.id}
-                    title={exp.title}
-                    url={exp.url}
-                    snippet={exp.snippet}
-                    details={exp.details}
                   />
                 ))}
               </>
