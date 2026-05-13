@@ -26,6 +26,7 @@
   --sponsored-bg: #f1f3f4;
   --footer-bg: #f2f2f2;
   --footer-border: #dadce0;
+  --desktop-header-search-offset: -120px;
 }
 
 [data-theme="dark"] {
@@ -53,6 +54,18 @@
   box-sizing: border-box;
 }
 
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+}
+
 body {
   background-color: var(--bg);
   color: var(--text);
@@ -60,6 +73,12 @@ body {
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .desktop-header-search-group {
+    transform: translateX(var(--desktop-header-search-offset));
+  }
 }
 
 a {

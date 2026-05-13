@@ -1,14 +1,32 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useSyncExternalStore } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import { suggestions } from "@/data/suggestions";
+
+function subscribeToHydration(callback: () => void) {
+  queueMicrotask(callback);
+  return () => {};
+}
+
+function getClientHydrationSnapshot() {
+  return true;
+}
+
+function getServerHydrationSnapshot() {
+  return false;
+}
 
 export default function SearchBar() {
   const { query, setQuery } = useSearch();
   const [inputValue, setInputValue] = useState(query);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const hasHydrated = useSyncExternalStore(
+    subscribeToHydration,
+    getClientHydrationSnapshot,
+    getServerHydrationSnapshot
+  );
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -18,6 +36,19 @@ export default function SearchBar() {
   if (lastSyncedQuery !== query) {
     setLastSyncedQuery(query);
     setInputValue(query);
+  }
+
+  function getFilteredSuggestions(value: string) {
+    return value.trim()
+      ? suggestions.filter((s) =>
+          s.toLowerCase().includes(value.toLowerCase())
+        )
+      : suggestions.slice(0, 5);
+  }
+
+  function prepareSuggestions(value = inputValue) {
+    setShowSuggestions(true);
+    setFilteredSuggestions(getFilteredSuggestions(value));
   }
 
   useEffect(() => {
@@ -35,15 +66,7 @@ export default function SearchBar() {
 
   function handleInputChange(value: string) {
     setInputValue(value);
-    if (value.trim()) {
-      const filtered = suggestions.filter((s) =>
-        s.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredSuggestions(filtered);
-    } else {
-      setFilteredSuggestions(suggestions.slice(0, 5));
-    }
-    setShowSuggestions(true);
+    prepareSuggestions(value);
   }
 
   function handleSearch(searchQuery?: string) {
@@ -60,13 +83,7 @@ export default function SearchBar() {
   }
 
   function handleFocus() {
-    const filtered = inputValue.trim()
-      ? suggestions.filter((s) =>
-          s.toLowerCase().includes(inputValue.toLowerCase())
-        )
-      : suggestions.slice(0, 5);
-    setFilteredSuggestions(filtered);
-    setShowSuggestions(true);
+    prepareSuggestions();
   }
 
   function handleClear() {
@@ -75,10 +92,18 @@ export default function SearchBar() {
     inputRef.current?.focus();
   }
 
+  const hasSuggestions = showSuggestions && filteredSuggestions.length > 0;
+  const isExpanded = hasHydrated && hasSuggestions;
+
   return (
-    <div ref={containerRef} className="relative w-full max-w-[692px]">
+    <div ref={containerRef} className="relative w-full min-w-0">
       <div
-        className="flex items-center rounded-full border px-4 py-2 md:py-3 hover:shadow-md transition-shadow"
+        onPointerDownCapture={() => prepareSuggestions()}
+        className={`flex min-w-0 items-center border px-3 py-2 md:px-4 md:py-3 hover:shadow-md transition-shadow ${
+          isExpanded
+            ? "rounded-t-3xl rounded-b-none border-b-0 shadow-md"
+            : "rounded-full"
+        }`}
         style={{
           backgroundColor: "var(--search-bg)",
           borderColor: "var(--search-border)",
@@ -103,7 +128,7 @@ export default function SearchBar() {
           onChange={(e) => handleInputChange(e.target.value)}
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
-          className="flex-1 outline-none text-base bg-transparent"
+          className="min-w-0 flex-1 outline-none text-base bg-transparent"
           style={{ color: "var(--text)" }}
           aria-label="Search"
         />
@@ -112,7 +137,7 @@ export default function SearchBar() {
           <>
             <button
               onClick={handleClear}
-              className="p-1 mx-1 hover:opacity-70"
+              className="mx-1 flex h-8 w-8 flex-shrink-0 items-center justify-center hover:opacity-70"
               style={{ color: "var(--text-secondary)" }}
               aria-label="Clear search"
             >
@@ -121,7 +146,7 @@ export default function SearchBar() {
               </svg>
             </button>
             <div
-              className="w-px h-6 mx-2"
+              className="w-px h-6 mx-1 flex-shrink-0 md:mx-2"
               style={{ backgroundColor: "var(--border)" }}
             />
           </>
@@ -129,7 +154,7 @@ export default function SearchBar() {
 
         <button
           onClick={() => handleSearch()}
-          className="p-1 hover:opacity-70"
+          className="flex h-8 w-8 flex-shrink-0 items-center justify-center hover:opacity-70"
           aria-label="Search"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -141,7 +166,7 @@ export default function SearchBar() {
         </button>
       </div>
 
-      {showSuggestions && filteredSuggestions.length > 0 && (
+      {isExpanded && (
         <div
           className="absolute top-full left-0 right-0 mt-0 rounded-b-3xl border border-t-0 shadow-lg z-50 overflow-hidden"
           style={{
@@ -149,10 +174,7 @@ export default function SearchBar() {
             borderColor: "var(--search-border)",
           }}
         >
-          <div
-            className="mx-4 border-t"
-            style={{ borderColor: "var(--border)" }}
-          />
+          <div className="border-t" style={{ borderColor: "var(--border)" }} />
           {filteredSuggestions.map((suggestion) => (
             <button
               key={suggestion}
@@ -174,7 +196,7 @@ export default function SearchBar() {
               {suggestion}
             </button>
           ))}
-          <div className="flex justify-center gap-3 py-3">
+          <div className="flex flex-wrap justify-center gap-2 px-3 py-3 md:gap-3">
             <button
               onClick={() => handleSearch()}
               className="px-4 py-2 text-sm rounded"

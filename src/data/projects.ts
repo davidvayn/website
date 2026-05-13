@@ -2,6 +2,7 @@ export interface Project {
   id: string;
   title: string;
   url: string;
+  href?: string;
   snippet: string;
   tags: string[];
   image: string;
@@ -11,12 +12,13 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "project-1",
-    title: "Analysis of Machine Learning Methods with Regression",
+    title: "Analysis of Machine Learning Methods",
     url: "dvayn.com › projects › ml-analysis",
+    href: "/analysis-of-machine-learning-methods.pdf",
     snippet:
-      "Analyzed classification models using <b>Jupyter Notebook</b>, <b>Python</b> (NumPy, Pandas), and <b>Regression</b> (SVM, KNN).",
+      "Analyzed classification and regression models using <b>Jupyter Notebook</b>, <b>Python</b> (NumPy, Pandas), <b>SVM</b>, and <b>KNN</b>.",
     tags: ["Python", "Jupyter", "Machine Learning", "NumPy", "Pandas"],
-    image: "/placeholder-ml.svg",
+    image: "/ml-methods-page-18.png",
     details:
       "Aug 2022 - Mar 2024. Analyzed classification models: Decision Trees, Logistic Regression, SVM, and KNN. Used NumPy and Pandas for data visualization and handling. Wrote a 20-page paper analyzing algorithm effectiveness based on multivariable datasets influencing income.",
   },

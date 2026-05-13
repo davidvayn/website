@@ -67,7 +67,7 @@ function SearchResults() {
   }, [lowerQuery, isBroadSearch]);
 
   const showAll = activeFilter === "all";
-  const showImages = activeFilter === "all" || activeFilter === "images";
+  const showImages = activeFilter === "images";
   const hasResults =
     filteredProjects.length > 0 || filteredExperiences.length > 0;
 
@@ -138,6 +138,7 @@ function SearchResults() {
                     key={project.id}
                     title={project.title}
                     url={project.url}
+                    href={project.href}
                     snippet={project.snippet}
                     details={project.details}
                     tags={project.tags}
@@ -152,7 +153,7 @@ function SearchResults() {
           </div>
 
           <div className="hidden lg:block">
-            <KnowledgePanel />
+            {!showImages && <KnowledgePanel />}
           </div>
         </div>
       </main>

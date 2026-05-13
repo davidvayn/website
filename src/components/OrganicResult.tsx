@@ -5,6 +5,7 @@ import { useState } from "react";
 interface OrganicResultProps {
   title: string;
   url: string;
+  href?: string;
   snippet: string;
   details: string;
   tags?: string[];
@@ -13,6 +14,7 @@ interface OrganicResultProps {
 export default function OrganicResult({
   title,
   url,
+  href,
   snippet,
   details,
   tags,
@@ -29,7 +31,7 @@ export default function OrganicResult({
 
       <h3 className="text-xl mb-1 flex items-center group">
         <a
-          href={`https://${url.split(" › ").join("/")}`}
+          href={href ?? `https://${url.split(" › ").join("/")}`}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"

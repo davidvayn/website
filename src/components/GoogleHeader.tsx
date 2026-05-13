@@ -24,27 +24,29 @@ export default function GoogleHeader() {
         borderColor: "var(--border)",
       }}
     >
-      <div className="flex items-center gap-3 md:gap-6 px-4 md:px-6 lg:px-8 pb-3">
-        <Link
-          href="/"
-          className="text-xl md:text-2xl font-bold tracking-tight flex-shrink-0"
-          style={{ fontFamily: "'Product Sans', arial, sans-serif" }}
-        >
-          <span style={{ color: "#4285f4" }}>D</span>
-          <span style={{ color: "#ea4335" }}>v</span>
-          <span style={{ color: "#fbbc05" }}>a</span>
-          <span style={{ color: "#4285f4" }}>y</span>
-          <span style={{ color: "#34a853" }}>n</span>
-        </Link>
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-3 gap-y-3 px-4 pb-3 md:grid-cols-[1fr_minmax(0,820px)_1fr] md:px-6 lg:px-8">
+        <div className="desktop-header-search-group contents md:col-span-1 md:col-start-2 md:flex md:min-w-0 md:items-center md:gap-x-6">
+          <Link
+            href="/"
+            className="col-start-2 row-start-1 text-xl md:text-2xl font-bold tracking-tight flex-shrink-0 md:col-auto md:row-auto"
+            style={{ fontFamily: "'Product Sans', arial, sans-serif" }}
+          >
+            <span style={{ color: "#4285f4" }}>D</span>
+            <span style={{ color: "#ea4335" }}>v</span>
+            <span style={{ color: "#fbbc05" }}>a</span>
+            <span style={{ color: "#4285f4" }}>y</span>
+            <span style={{ color: "#34a853" }}>n</span>
+          </Link>
 
-        <div className="flex-1 max-w-[692px] min-w-0">
-          <SearchBar />
+          <div className="col-span-3 row-start-2 min-w-0 md:col-auto md:row-auto md:flex-1 md:max-w-[692px]">
+            <SearchBar />
+          </div>
         </div>
 
-        <div className="flex items-center gap-1 md:gap-3 ml-auto">
+        <div className="z-10 col-start-3 row-start-1 flex flex-shrink-0 items-center justify-self-end gap-2 md:gap-3">
           <button
             onClick={toggle}
-            className="p-1.5 md:p-2 rounded-full hover:bg-[var(--hover-bg)] transition-colors"
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full hover:bg-[var(--hover-bg)] transition-colors"
             aria-label="Toggle dark mode"
             title={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
@@ -60,7 +62,7 @@ export default function GoogleHeader() {
           </button>
 
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+            className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
             style={{ backgroundColor: "var(--hover-bg)" }}
             title="David Vayntrub"
           >
@@ -76,12 +78,12 @@ export default function GoogleHeader() {
         </div>
       </div>
 
-      <nav className="flex gap-1 px-4 md:px-6 lg:px-[180px]">
+      <nav className="flex max-w-full min-w-0 gap-0 px-3 md:gap-1 md:px-6 lg:px-[180px]">
         {NAV_TABS.map((tab) => (
           <button
             key={tab.filter}
             onClick={() => setActiveFilter(tab.filter)}
-            className={`flex items-center gap-1 px-3 py-2 text-sm border-b-[3px] transition-colors ${
+            className={`flex min-w-0 items-center gap-1 whitespace-nowrap px-2 py-2 text-sm border-b-[3px] transition-colors md:px-3 ${
               activeFilter === tab.filter
                 ? "border-[#4285f4]"
                 : "border-transparent hover:border-[var(--text-secondary)]"
