@@ -24,8 +24,8 @@ export default function GoogleHeader() {
         borderColor: "var(--border)",
       }}
     >
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-3 gap-y-3 px-4 pb-3 md:grid-cols-[1fr_minmax(0,820px)_1fr] md:px-6 lg:px-8">
-        <div className="desktop-header-search-group contents md:col-span-1 md:col-start-2 md:flex md:min-w-0 md:items-center md:gap-x-6">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-3 gap-y-3 px-4 pb-3 md:flex md:flex-nowrap md:px-6 lg:px-[180px]">
+        <div className="contents md:flex md:min-w-0 md:flex-1 md:items-center md:gap-x-6">
           <Link
             href="/"
             className="col-start-2 row-start-1 text-xl md:text-2xl font-bold tracking-tight flex-shrink-0 md:col-auto md:row-auto"
@@ -43,7 +43,7 @@ export default function GoogleHeader() {
           </div>
         </div>
 
-        <div className="z-10 col-start-3 row-start-1 flex flex-shrink-0 items-center justify-self-end gap-2 md:gap-3">
+        <div className="z-10 col-start-3 row-start-1 flex flex-shrink-0 items-center justify-self-end gap-2 md:ml-auto md:gap-3">
           <button
             onClick={toggle}
             className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full hover:bg-[var(--hover-bg)] transition-colors"

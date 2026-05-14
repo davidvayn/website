@@ -26,7 +26,6 @@
   --sponsored-bg: #f1f3f4;
   --footer-bg: #f2f2f2;
   --footer-border: #dadce0;
-  --desktop-header-search-offset: -120px;
 }
 
 [data-theme="dark"] {
@@ -73,12 +72,6 @@ body {
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-@media (min-width: 768px) {
-  .desktop-header-search-group {
-    transform: translateX(var(--desktop-header-search-offset));
-  }
 }
 
 a {
