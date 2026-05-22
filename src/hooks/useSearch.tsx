@@ -1,7 +1,13 @@
 "use client";
 
-import { createContext, useContext, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+  createContext,
+  useContext,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { useSearchParams } from "next/navigation";
 
 interface SearchContextType {
   query: string;
@@ -17,28 +23,54 @@ const SearchContext = createContext<SearchContextType>({
   setActiveFilter: () => {},
 });
 
+function readSearchState(params: URLSearchParams) {
+  return {
+    query: params.get("q") || "David Vayntrub",
+    activeFilter: params.get("f") || "all",
+  };
+}
+
+function pushSearchParams(params: URLSearchParams) {
+  const queryString = params.toString();
+  window.history.pushState(null, "", queryString ? `/?${queryString}` : "/");
+}
+
 export function SearchProvider({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  
-  const query = searchParams.get("q") || "David Vayntrub";
-  const activeFilter = searchParams.get("f") || "all";
+  const [searchState, setSearchState] = useState(() =>
+    readSearchState(searchParams)
+  );
+
+  useEffect(() => {
+    function handlePopState() {
+      setSearchState(
+        readSearchState(new URLSearchParams(window.location.search))
+      );
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   const setQuery = useCallback((q: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(window.location.search);
     if (q) {
       params.set("q", q);
     } else {
       params.delete("q");
     }
-    router.push(`/?${params.toString()}`);
-  }, [router, searchParams]);
+    pushSearchParams(params);
+    setSearchState(readSearchState(params));
+  }, []);
 
   const setActiveFilter = useCallback((f: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(window.location.search);
     params.set("f", f);
-    router.push(`/?${params.toString()}`);
-  }, [router, searchParams]);
+    pushSearchParams(params);
+    setSearchState(readSearchState(params));
+  }, []);
+
+  const { query, activeFilter } = searchState;
 
   return (
     <SearchContext.Provider

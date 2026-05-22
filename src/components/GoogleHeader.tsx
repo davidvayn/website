@@ -81,6 +81,7 @@ export default function GoogleHeader() {
       <nav className="flex max-w-full min-w-0 gap-0 px-3 md:gap-1 md:px-6 lg:px-[180px]">
         {NAV_TABS.map((tab) => (
           <button
+            type="button"
             key={tab.filter}
             onClick={() => setActiveFilter(tab.filter)}
             className={`flex min-w-0 items-center gap-1 whitespace-nowrap px-2 py-2 text-sm border-b-[3px] transition-colors md:px-3 ${
