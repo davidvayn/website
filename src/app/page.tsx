@@ -12,6 +12,7 @@ import Pagination from "@/components/Pagination";
 import GeoFooter from "@/components/GeoFooter";
 import { projects } from "@/data/projects";
 import { experiences } from "@/data/experiences";
+import { searchItems } from "@/lib/search";
 
 const DEFAULT_QUERY = "David Vayntrub";
 const BROAD_TERMS = ["david", "vayntrub", "david vayntrub"];
@@ -19,30 +20,35 @@ const BROAD_TERMS = ["david", "vayntrub", "david vayntrub"];
 function SearchResults() {
   const { query, activeFilter, setQuery } = useSearch();
   const lowerQuery = query.toLowerCase();
-  const isBroadSearch =
-    !query.trim() || BROAD_TERMS.includes(lowerQuery);
+  const isBroadSearch = !query.trim() || BROAD_TERMS.includes(lowerQuery);
 
   const filteredProjects = useMemo(
     () =>
       isBroadSearch
         ? projects
-        : projects.filter(
-            (p) =>
-              p.title.toLowerCase().includes(lowerQuery) ||
-              p.snippet.toLowerCase().includes(lowerQuery) ||
-              p.tags.some((t) => t.toLowerCase().includes(lowerQuery))
-          ),
-    [lowerQuery, isBroadSearch]
+        : searchItems(projects, query, {
+            getText: (project) => [
+              project.title,
+              project.url,
+              project.snippet,
+              project.details,
+              ...project.tags,
+            ],
+          }),
+    [query, isBroadSearch]
   );
 
   const filteredExperiences = useMemo(() => {
     const exps = isBroadSearch
       ? experiences
-      : experiences.filter(
-          (e) =>
-            e.title.toLowerCase().includes(lowerQuery) ||
-            e.snippet.toLowerCase().includes(lowerQuery)
-        );
+      : searchItems(experiences, query, {
+          getText: (experience) => [
+            experience.title,
+            experience.url,
+            experience.snippet,
+            experience.details,
+          ],
+        });
 
     // Only include the first hackathon found while maintaining order
     let hackathonFound = false;
@@ -64,7 +70,7 @@ function SearchResults() {
     }
 
     return result;
-  }, [lowerQuery, isBroadSearch]);
+  }, [query, isBroadSearch]);
 
   const showAll = activeFilter === "all";
   const showImages = activeFilter === "images";

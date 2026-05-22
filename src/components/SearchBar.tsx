@@ -96,12 +96,19 @@ export default function SearchBar() {
   const isExpanded = hasHydrated && hasSuggestions;
 
   return (
-    <div ref={containerRef} className="relative w-full min-w-0">
+    <div
+      ref={containerRef}
+      className={`relative w-full min-w-0 rounded-3xl transition-[filter] duration-150 ${
+        isExpanded
+          ? "z-50 drop-shadow-[0_2px_3px_rgba(32,33,36,0.25)]"
+          : "hover:drop-shadow-[0_1px_2px_rgba(32,33,36,0.28)]"
+      }`}
+    >
       <div
         onPointerDownCapture={() => prepareSuggestions()}
-        className={`flex min-w-0 items-center border px-3 py-2 md:px-4 md:py-3 hover:shadow-md transition-shadow ${
+        className={`flex min-w-0 items-center border px-3 py-2 md:px-4 md:py-3 ${
           isExpanded
-            ? "rounded-t-3xl rounded-b-none border-b-0 shadow-md"
+            ? "rounded-t-3xl rounded-b-none border-b-0"
             : "rounded-full"
         }`}
         style={{
@@ -168,7 +175,7 @@ export default function SearchBar() {
 
       {isExpanded && (
         <div
-          className="absolute top-full left-0 right-0 mt-0 rounded-b-3xl border border-t-0 shadow-lg z-50 overflow-hidden"
+          className="absolute top-full left-0 right-0 z-50 mt-0 overflow-hidden rounded-b-3xl border border-t-0"
           style={{
             backgroundColor: "var(--search-bg)",
             borderColor: "var(--search-border)",
