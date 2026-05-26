@@ -24,24 +24,14 @@ export const projects: Project[] = [
   },
   {
     id: "project-2",
-    title: "Inventory Management System",
-    url: "dvayn.com › projects › inventory-system",
+    title: "BitWizards",
+    url: "bitwizards-seven.vercel.app",
+    href: "https://bitwizards-seven.vercel.app/",
     snippet:
-      "RESTful API for inventory management built with <b>Java Spring Boot</b> and <b>MySQL</b>.",
-    tags: ["Java", "Spring Boot", "MySQL", "REST API"],
-    image: "/placeholder-inventory.svg",
+      "Fantasy-themed educational platform built for <b>Cutie Hack 2025</b> using <b>Next.js</b>, <b>React</b>, <b>TypeScript</b>, and the <b>Blockly Library</b>.",
+    tags: ["Next.js", "React", "TypeScript", "Blockly", "Vercel"],
+    image: "/bitwizards-home.png",
     details:
-      "Jun 2025 - Jul 2025. Individually designed a RESTful inventory management API using Java Spring Boot. Implemented CRUD functionality, category-based filtering, and integration with MySQL for persistence.",
-  },
-  {
-    id: "project-3",
-    title: "Task Terry - Schedule Management App",
-    url: "dvayn.com › projects › task-terry",
-    snippet:
-      "Full-stack schedule management app using <b>C++</b>, <b>Node.js/Express</b>, and <b>React + Tailwind CSS</b>.",
-    tags: ["C++", "Node.js", "React", "Tailwind CSS", "Express"],
-    image: "/placeholder-task-terry.svg",
-    details:
-      "Apr 2025 - Jun 2025. Developed a full-stack schedule management web app using C++ backend integrated with Node.js/Express and a React + Tailwind CSS frontend. Applied Agile and SOLID principles. Implemented unit tests using Google Test for high reliability across C++-JS communication.",
+      "Nov 2025. Built BitWizards as an educational platform for K-12 students in a 12-hour hackathon. Created a fantasy-themed web experience using Next.js, React, and TypeScript, with Blockly-powered interactive programming blocks backed by real-time JavaScript execution. Deployed the finished app on Vercel.",
   },
 ];

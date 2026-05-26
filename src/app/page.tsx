@@ -12,6 +12,7 @@ import Pagination from "@/components/Pagination";
 import GeoFooter from "@/components/GeoFooter";
 import { projects } from "@/data/projects";
 import { experiences } from "@/data/experiences";
+import { blogPosts } from "@/data/blogs";
 import { searchItems } from "@/lib/search";
 
 const DEFAULT_QUERY = "David Vayntrub";
@@ -74,6 +75,7 @@ function SearchResults() {
 
   const showAll = activeFilter === "all";
   const showImages = activeFilter === "images";
+  const showBlog = activeFilter === "blog";
   const hasResults =
     filteredProjects.length > 0 || filteredExperiences.length > 0;
 
@@ -128,6 +130,7 @@ function SearchResults() {
                     key={exp.id}
                     title={exp.title}
                     url={exp.url}
+                    href={exp.href}
                     snippet={exp.snippet}
                     details={exp.details}
                   />
@@ -136,6 +139,21 @@ function SearchResults() {
             )}
 
             {showImages && <ImagesRow />}
+
+            {showBlog &&
+              blogPosts.map((post) => (
+                <OrganicResult
+                  key={post.id}
+                  title={post.title}
+                  url={post.url}
+                  href={post.href}
+                  snippet={post.snippet}
+                  details={post.details}
+                  tags={post.tags}
+                />
+              ))}
+
+            {showAll && <PeopleAlsoAsk />}
 
             {filteredProjects.length > 0 && showAll && (
               <>
@@ -152,8 +170,6 @@ function SearchResults() {
                 ))}
               </>
             )}
-
-            {showAll && <PeopleAlsoAsk />}
 
             <Pagination />
           </div>

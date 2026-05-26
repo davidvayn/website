@@ -8,12 +8,11 @@ import SearchBar from "./SearchBar";
 const NAV_TABS = [
   { label: "All", filter: "all", icon: "M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" },
   { label: "Images", filter: "images", icon: "M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" },
-  { label: "Videos", filter: "videos", icon: "M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" },
-  { label: "News", filter: "news", icon: "M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z" },
+  { label: "Blog", filter: "blog", icon: "M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 9h-2V5h2v6zm0 4h-2v-2h2v2z" },
 ];
 
 export default function GoogleHeader() {
-  const { activeFilter, setActiveFilter } = useSearch();
+  const { activeFilter, setActiveFilter, resetSearch } = useSearch();
   const { isDark, toggle } = useDarkMode();
 
   return (
@@ -28,6 +27,7 @@ export default function GoogleHeader() {
         <div className="contents md:flex md:min-w-0 md:flex-1 md:items-center md:gap-x-6">
           <Link
             href="/"
+            onClick={resetSearch}
             className="col-start-2 row-start-1 text-xl md:text-2xl font-bold tracking-tight flex-shrink-0 md:col-auto md:row-auto"
             style={{ fontFamily: "'Product Sans', arial, sans-serif" }}
           >

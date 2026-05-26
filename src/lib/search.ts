@@ -4,8 +4,7 @@ const SEARCH_ALIASES: Record<string, string[]> = {
   backend: ["api", "spring", "node", "express", "supabase", "convex"],
   chess: ["speechrecognizer", "whisper", "voice"],
   frontend: ["react", "next", "nextjs", "typescript", "tailwind"],
-  hackathon: ["citrus", "cutie", "36-hour", "12-hour"],
-  inventory: ["mysql", "spring", "java", "crud"],
+  hackathon: ["cutie", "12-hour", "bitwizards", "blockly"],
   llm: ["anthropic", "ai"],
   ml: ["machine learning", "svm", "knn", "classification", "regression"],
   next: ["next.js", "nextjs", "react"],
@@ -14,6 +13,8 @@ const SEARCH_ALIASES: Record<string, string[]> = {
   react: ["frontend", "next", "nextjs"],
   resume: ["experience", "projects", "skills"],
   study: ["study spot", "school documents", "canvas", "llamaparse"],
+  bitwizards: ["vercel", "fantasy", "nextjs", "blockly", "cutie"],
+  blockly: ["bitwizards", "educational", "javascript"],
 };
 
 interface SearchOptions<T> {

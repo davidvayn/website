@@ -14,6 +14,7 @@ interface SearchContextType {
   setQuery: (q: string) => void;
   activeFilter: string;
   setActiveFilter: (f: string) => void;
+  resetSearch: () => void;
 }
 
 const SearchContext = createContext<SearchContextType>({
@@ -21,12 +22,17 @@ const SearchContext = createContext<SearchContextType>({
   setQuery: () => {},
   activeFilter: "all",
   setActiveFilter: () => {},
+  resetSearch: () => {},
 });
 
+const SUPPORTED_FILTERS = new Set(["all", "images", "blog"]);
+
 function readSearchState(params: URLSearchParams) {
+  const filter = params.get("f") || "all";
+
   return {
     query: params.get("q") || "David Vayntrub",
-    activeFilter: params.get("f") || "all",
+    activeFilter: SUPPORTED_FILTERS.has(filter) ? filter : "all",
   };
 }
 
@@ -70,11 +76,16 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     setSearchState(readSearchState(params));
   }, []);
 
+  const resetSearch = useCallback(() => {
+    window.history.pushState(null, "", "/");
+    setSearchState({ query: "David Vayntrub", activeFilter: "all" });
+  }, []);
+
   const { query, activeFilter } = searchState;
 
   return (
     <SearchContext.Provider
-      value={{ query, setQuery, activeFilter, setActiveFilter }}
+      value={{ query, setQuery, activeFilter, setActiveFilter, resetSearch }}
     >
       {children}
     </SearchContext.Provider>

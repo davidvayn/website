@@ -13,10 +13,10 @@ function projectCaption(project: (typeof projects)[number]) {
   }
 
   if (project.id === "project-2") {
-    return "Inventory API architecture with Java Spring Boot, MySQL, and REST endpoints";
+    return "BitWizards Blockly-powered CS learning platform from Cutie Hack";
   }
 
-  return "Task Terry full-stack scheduling workflow built with C++, Node.js, and React";
+  return `${project.title} preview`;
 }
 
 export default function ImagesRow() {
@@ -41,7 +41,8 @@ export default function ImagesRow() {
                 border: "1px solid var(--border)",
               }}
             >
-              {project.image === "/ml-methods-page-18.png" ? (
+              {project.image !== "" &&
+              !project.image.startsWith("/placeholder") ? (
                 <Image
                   src={project.image}
                   alt={`${project.title} preview`}

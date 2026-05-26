@@ -2,6 +2,7 @@ export interface Experience {
   id: string;
   title: string;
   url: string;
+  href?: string;
   snippet: string;
   details: string;
 }
@@ -11,6 +12,7 @@ export const experiences: Experience[] = [
     id: "exp-1",
     title: "Cofounding Engineer - Study Spot",
     url: "dvayn.com › experience › study-spot",
+    href: "https://github.com/twaldin/studyspot",
     snippet:
       "Cofounding Engineer at <b>Study Spot</b>. AI-based study tool using <b>Anthropic LLM</b>, <b>Next.js</b>, and <b>Supabase</b>. Integrated Canvas LMS API and LlamaParse.",
     details:
@@ -20,27 +22,10 @@ export const experiences: Experience[] = [
     id: "exp-2",
     title: "Software Engineer - ACM Riverside",
     url: "dvayn.com › experience › acm-riverside",
+    href: "https://github.com/acm-ucr/wizard-chess",
     snippet:
       "Software Engineer at <b>ACM Riverside</b>. Developed a self-moving chess set using <b>Python</b>, <b>SpeechRecognizer</b>, and <b>Whisper C++</b>.",
     details:
       "Jan 2025 - Mar 2025 · Riverside, CA. Collaborated on a 10-member team to develop a self-moving chess set. Utilized Python SpeechRecognizer and PyAudio to detect and parse voice commands. Compared Whisper C++ speech-to-text model against Python SpeechRecognizer for speech accuracy to determine optimal implementation.",
-  },
-  {
-    id: "exp-3",
-    title: "Frontend Developer - Citrus Hack 2025",
-    url: "dvayn.com › experience › citrus-hack",
-    snippet:
-      "Frontend Developer at <b>Citrus Hack</b>. Created an AI-based movie recommendation platform using <b>Next.js</b>, <b>Convex</b>, and <b>Clerk</b>.",
-    details:
-      "Apr 2025. Created an AI-based movie recommendation platform in a 36-hour hackathon. Used Next.js and TypeScript for frontend with Convex backend and Clerk for authentication. Implemented cosine similarity algorithm in Python to generate user-specific suggestions.",
-  },
-  {
-    id: "exp-4",
-    title: "Frontend Developer - Cutie Hack 2025",
-    url: "dvayn.com › experience › cutie-hack",
-    snippet:
-      "Frontend Developer at <b>Cutie Hack</b>. Built a <b>Next.js</b> educational platform for K-12 students using the <b>Blockly Library</b>.",
-    details:
-      "Nov 2025. Built a Next.js educational platform in a 12-hour hackathon to teach CS fundamentals to K-12 students using the Blockly Library. Coded 15 custom interactive logic blocks backed by real-time JavaScript execution.",
   },
 ];

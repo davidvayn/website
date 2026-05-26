@@ -17,6 +17,6 @@ export const faqs: FAQ[] = [
   {
     question: "What is David Vayntrub's specialized experience?",
     answer:
-      "David specializes in AI integration, full-stack development, and real-time systems. His recent work includes cofounding StudySpot (an AI study tool), developing voice-controlled hardware at ACM Riverside, and building AI-based platforms at various hackathons like Citrus Hack and Cutie Hack.",
+      "David specializes in AI integration, full-stack development, and real-time systems. His recent work includes cofounding StudySpot (an AI study tool), developing voice-controlled hardware at ACM Riverside, and building BitWizards, a Blockly-powered educational platform created at Cutie Hack.",
   },
 ];

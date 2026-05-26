@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 interface OrganicResultProps {
   title: string;
   url: string;
-  href?: string;
+  href?: string | null;
   snippet: string;
   details: string;
   tags?: string[];
@@ -20,6 +21,9 @@ export default function OrganicResult({
   tags,
 }: OrganicResultProps) {
   const [expanded, setExpanded] = useState(false);
+  const resolvedHref = href ?? `https://${url.split(" › ").join("/")}`;
+  const isInternalRoute =
+    typeof href === "string" && href.startsWith("/") && !href.includes(".");
 
   return (
     <div className="mb-6 max-w-[600px]">
@@ -30,20 +34,27 @@ export default function OrganicResult({
       </div>
 
       <h3 className="text-xl mb-1 flex items-center group">
-        <a
-          href={href ?? `https://${url.split(" › ").join("/")}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline"
-          style={{ color: "var(--google-blue)" }}
-          onClick={() => {
-            // Prevent navigation for demo purposes if needed, 
-            // but the user said they "don't work at all" which usually means they want links.
-            // For now, let's just make them real links.
-          }}
-        >
-          {title}
-        </a>
+        {href === null ? (
+          <span style={{ color: "var(--google-blue)" }}>{title}</span>
+        ) : isInternalRoute ? (
+          <Link
+            href={resolvedHref}
+            className="hover:underline"
+            style={{ color: "var(--google-blue)" }}
+          >
+            {title}
+          </Link>
+        ) : (
+          <a
+            href={resolvedHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+            style={{ color: "var(--google-blue)" }}
+          >
+            {title}
+          </a>
+        )}
         <button
           onClick={() => setExpanded(!expanded)}
           className="ml-2 p-1 rounded-full opacity-0 group-hover:opacity-100 hover:bg-[var(--hover-bg)] transition-opacity"
