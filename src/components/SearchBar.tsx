@@ -1,8 +1,17 @@
 "use client";
 
-import { useState, useRef, useEffect, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+  useEffect,
+  useSyncExternalStore,
+} from "react";
 import { useSearch } from "@/hooks/useSearch";
+import { useVoiceSearch } from "@/hooks/useVoiceSearch";
 import { suggestions } from "@/data/suggestions";
+import { getSearchKeywordCandidates, matchVoiceQuery } from "@/lib/search";
 
 function subscribeToHydration(callback: () => void) {
   queueMicrotask(callback);
@@ -22,6 +31,7 @@ export default function SearchBar() {
   const [inputValue, setInputValue] = useState(query);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const voiceCandidates = useMemo(() => getSearchKeywordCandidates(), []);
   const hasHydrated = useSyncExternalStore(
     subscribeToHydration,
     getClientHydrationSnapshot,
@@ -35,7 +45,9 @@ export default function SearchBar() {
   const [lastSyncedQuery, setLastSyncedQuery] = useState(query);
   if (lastSyncedQuery !== query) {
     setLastSyncedQuery(query);
-    setInputValue(query);
+    if (inputValue === lastSyncedQuery || inputValue === query) {
+      setInputValue(query);
+    }
   }
 
   function getFilteredSuggestions(value: string) {
@@ -76,6 +88,24 @@ export default function SearchBar() {
     setShowSuggestions(false);
   }
 
+  const handleVoiceResult = useCallback(
+    (transcript: string) => {
+      const matchedQuery = matchVoiceQuery(transcript, voiceCandidates);
+      if (!matchedQuery) {
+        return;
+      }
+
+      setQuery(matchedQuery);
+      setInputValue(matchedQuery);
+      setShowSuggestions(false);
+    },
+    [setQuery, voiceCandidates]
+  );
+
+  const { isListening, isSupported, message, startListening } = useVoiceSearch({
+    onResult: handleVoiceResult,
+  });
+
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "Enter") {
       handleSearch();
@@ -94,6 +124,11 @@ export default function SearchBar() {
 
   const hasSuggestions = showSuggestions && filteredSuggestions.length > 0;
   const isExpanded = hasHydrated && hasSuggestions;
+  const voiceButtonTitle = isSupported
+    ? isListening
+      ? "Listening for voice search"
+      : "Search by voice"
+    : "Voice search is not supported in this browser";
 
   return (
     <div
@@ -160,6 +195,31 @@ export default function SearchBar() {
         )}
 
         <button
+          type="button"
+          onClick={() => {
+            setShowSuggestions(false);
+            startListening();
+          }}
+          disabled={!isSupported}
+          className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full hover:bg-[var(--hover-bg)] disabled:cursor-not-allowed disabled:opacity-50"
+          aria-label={voiceButtonTitle}
+          aria-pressed={isListening}
+          title={voiceButtonTitle}
+        >
+          <svg
+            className="w-5 h-5"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            style={{
+              color: isListening ? "#ea4335" : "var(--text-secondary)",
+            }}
+          >
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+            <path d="M17.3 11c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z" />
+          </svg>
+        </button>
+
+        <button
           onClick={() => handleSearch()}
           className="flex h-8 w-8 flex-shrink-0 items-center justify-center hover:opacity-70"
           aria-label="Search"
@@ -172,6 +232,10 @@ export default function SearchBar() {
           </svg>
         </button>
       </div>
+
+      <p className="sr-only" aria-live="polite">
+        {message}
+      </p>
 
       {isExpanded && (
         <div

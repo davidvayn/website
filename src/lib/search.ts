@@ -1,3 +1,8 @@
+import { blogPosts } from "@/data/blogs";
+import { experiences } from "@/data/experiences";
+import { projects } from "@/data/projects";
+import { suggestions } from "@/data/suggestions";
+
 const SEARCH_ALIASES: Record<string, string[]> = {
   ai: ["anthropic", "llm", "machine learning", "recommendation"],
   api: ["rest", "restful", "canvas", "backend", "endpoint"],
@@ -136,6 +141,87 @@ function scoreText(query: string, queryTokens: string[], textParts: string[]) {
   }
 
   return score;
+}
+
+function addCandidate(candidates: string[], value: string | undefined) {
+  if (!value) {
+    return;
+  }
+
+  const cleaned = stripHtml(value).trim();
+  if (cleaned) {
+    candidates.push(cleaned);
+  }
+}
+
+export function getSearchKeywordCandidates() {
+  const candidates: string[] = [];
+
+  for (const suggestion of suggestions) {
+    addCandidate(candidates, suggestion);
+  }
+
+  for (const project of projects) {
+    addCandidate(candidates, project.title);
+    addCandidate(candidates, project.url);
+    addCandidate(candidates, project.snippet);
+    addCandidate(candidates, project.details);
+    for (const tag of project.tags) {
+      addCandidate(candidates, tag);
+    }
+  }
+
+  for (const experience of experiences) {
+    addCandidate(candidates, experience.title);
+    addCandidate(candidates, experience.url);
+    addCandidate(candidates, experience.snippet);
+    addCandidate(candidates, experience.details);
+  }
+
+  for (const post of blogPosts) {
+    addCandidate(candidates, post.title);
+    addCandidate(candidates, post.url);
+    addCandidate(candidates, post.snippet);
+    addCandidate(candidates, post.details);
+    for (const tag of post.tags) {
+      addCandidate(candidates, tag);
+    }
+  }
+
+  const seen = new Set<string>();
+  return candidates.filter((candidate) => {
+    const normalized = normalize(candidate);
+    if (!normalized || seen.has(normalized)) {
+      return false;
+    }
+
+    seen.add(normalized);
+    return true;
+  });
+}
+
+export function matchVoiceQuery(transcript: string, candidates: string[]) {
+  const normalizedTranscript = normalize(transcript);
+
+  if (!normalizedTranscript) {
+    return "";
+  }
+
+  const transcriptTokens = tokenize(normalizedTranscript);
+  const minimumScore = Math.max(10, transcriptTokens.length * 5);
+  let bestCandidate = transcript.trim();
+  let bestScore = 0;
+
+  for (const candidate of candidates) {
+    const score = scoreText(normalizedTranscript, transcriptTokens, [candidate]);
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestCandidate = candidate;
+    }
+  }
+
+  return bestScore >= minimumScore ? bestCandidate : transcript.trim();
 }
 
 export function searchItems<T>(items: T[], query: string, options: SearchOptions<T>) {
