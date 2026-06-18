@@ -1,21 +1,7 @@
-import { expect, test } from '@playwright/test';
+import { expect, type Page, test } from '@playwright/test';
 
-test('typed search updates results and URL state', async ({ page }) => {
-  await page.goto('/');
-
-  const searchBox = page.getByRole('textbox', { name: 'Search' });
-  await searchBox.click();
-  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+A' : 'Control+A');
-  await searchBox.pressSequentially('python');
-  await expect(searchBox).toHaveValue('python');
-  await searchBox.press('Enter');
-
-  await expect(page).toHaveURL(/\?q=python/);
-  await expect(page.getByText('Analysis of Machine Learning Methods')).toBeVisible();
-});
-
-test('voice search matches heard words to a site keyword', async ({ page }) => {
-  await page.addInitScript(() => {
+async function mockSpeechRecognition(page: Page, transcript: string) {
+  await page.addInitScript((spokenTranscript) => {
     class MockSpeechRecognition {
       continuous = false;
       interimResults = false;
@@ -45,7 +31,7 @@ test('voice search matches heard words to a site keyword', async ({ page }) => {
               0: {
                 isFinal: true,
                 length: 1,
-                0: { transcript: 'machine lerning' },
+                0: { transcript: spokenTranscript },
               },
             },
           });
@@ -60,7 +46,25 @@ test('voice search matches heard words to a site keyword', async ({ page }) => {
         value: MockSpeechRecognition,
       });
     }
-  });
+  }, transcript);
+}
+
+test('typed search updates results and URL state', async ({ page }) => {
+  await page.goto('/');
+
+  const searchBox = page.getByRole('textbox', { name: 'Search' });
+  await searchBox.click();
+  await page.keyboard.press(process.platform === 'darwin' ? 'Meta+A' : 'Control+A');
+  await searchBox.pressSequentially('python');
+  await expect(searchBox).toHaveValue('python');
+  await searchBox.press('Enter');
+
+  await expect(page).toHaveURL(/\?q=python/);
+  await expect(page.getByText('Analysis of Machine Learning Methods')).toBeVisible();
+});
+
+test('voice search matches heard words to a site keyword', async ({ page }) => {
+  await mockSpeechRecognition(page, 'machine lerning');
 
   await page.goto('/');
   await page.getByRole('button', { name: 'Search by voice' }).click();
@@ -69,6 +73,34 @@ test('voice search matches heard words to a site keyword', async ({ page }) => {
     'Analysis of Machine Learning Methods'
   );
   await expect(page).toHaveURL(/q=Analysis\+of\+Machine\+Learning\+Methods/);
+});
+
+test('voice search does not add the site owner name to generic queries', async ({
+  page,
+}) => {
+  await mockSpeechRecognition(page, 'projects');
+
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Search by voice' }).click();
+
+  await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue(
+    'projects'
+  );
+  await expect(page).toHaveURL(/\?q=projects/);
+});
+
+test('voice search keeps the spoken phrase when no close keyword matches', async ({
+  page,
+}) => {
+  await mockSpeechRecognition(page, 'pizza near me');
+
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Search by voice' }).click();
+
+  await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue(
+    'pizza near me'
+  );
+  await expect(page).toHaveURL(/\?q=pizza\+near\+me/);
 });
 
 test('voice search is disabled when speech recognition is unavailable', async ({

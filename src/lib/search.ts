@@ -54,6 +54,19 @@ function unique(values: string[]) {
   return Array.from(new Set(values));
 }
 
+function includesName(value: string) {
+  const tokens = tokenize(value);
+  return tokens.includes("david") || tokens.includes("vayntrub");
+}
+
+function stripPersonalName(value: string) {
+  return stripHtml(value)
+    .replace(/\bdavid\s+vayntrub\b/gi, " ")
+    .replace(/\bdvayn\b/gi, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
 function expandQueryTokens(tokens: string[]) {
   return unique(
     tokens.flatMap((token) => [
@@ -158,6 +171,7 @@ export function getSearchKeywordCandidates() {
   const candidates: string[] = [];
 
   for (const suggestion of suggestions) {
+    addCandidate(candidates, stripPersonalName(suggestion));
     addCandidate(candidates, suggestion);
   }
 
@@ -209,19 +223,37 @@ export function matchVoiceQuery(transcript: string, candidates: string[]) {
 
   const transcriptTokens = tokenize(normalizedTranscript);
   const minimumScore = Math.max(10, transcriptTokens.length * 5);
+  const transcriptIncludesName = includesName(normalizedTranscript);
   let bestCandidate = transcript.trim();
   let bestScore = 0;
+  let bestCandidateIncludesName = false;
 
   for (const candidate of candidates) {
     const score = scoreText(normalizedTranscript, transcriptTokens, [candidate]);
+    const candidateIncludesName = includesName(candidate);
 
-    if (score > bestScore) {
+    if (
+      score > bestScore ||
+      (score === bestScore &&
+        bestCandidateIncludesName &&
+        !candidateIncludesName &&
+        !transcriptIncludesName)
+    ) {
       bestScore = score;
       bestCandidate = candidate;
+      bestCandidateIncludesName = candidateIncludesName;
     }
   }
 
-  return bestScore >= minimumScore ? bestCandidate : transcript.trim();
+  if (bestScore < minimumScore) {
+    return transcript.trim();
+  }
+
+  if (!transcriptIncludesName && bestCandidateIncludesName) {
+    return transcript.trim();
+  }
+
+  return bestCandidate;
 }
 
 export function searchItems<T>(items: T[], query: string, options: SearchOptions<T>) {
