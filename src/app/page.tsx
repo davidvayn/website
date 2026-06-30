@@ -3,6 +3,7 @@
 import { useMemo, Suspense } from "react";
 import { SearchProvider, useSearch } from "@/hooks/useSearch";
 import GoogleHeader from "@/components/GoogleHeader";
+import AiOverview from "@/components/AiOverview";
 import SponsoredResult from "@/components/SponsoredResult";
 import OrganicResult from "@/components/OrganicResult";
 import PeopleAlsoAsk from "@/components/PeopleAlsoAsk";
@@ -92,6 +93,10 @@ function SearchResults() {
 
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
           <div className="flex-1 min-w-0">
+            {/* AI Overview — only for user-initiated searches (skip the default
+                seed so a plain homepage visit makes no model call). */}
+            {showAll && query !== DEFAULT_QUERY && <AiOverview query={query} />}
+
             {!hasResults && (
               <div className="mb-6">
                 <p className="text-base" style={{ color: "var(--text)" }}>
