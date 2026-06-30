@@ -22,7 +22,7 @@ const DEFAULT_QUERY = "David Vayntrub";
 // no API call (the answer is the same for every visitor, so there's no reason
 // to pay/wait for a live generation). Edit this freely.
 const DEFAULT_OVERVIEW =
-  "David Vayntrub is a Computer Science student at UC Riverside (expected 2027) focused on full-stack development, AI integration, and real-time systems. He cofounded Study Spot, an AI-powered study tool built with Next.js, Supabase, and the Anthropic LLM, and has shipped projects ranging from a voice-controlled self-moving chess set at ACM Riverside to BitWizards, a Blockly-powered educational platform built at Cutie Hack 2025. He works primarily in Python, TypeScript, and React.";
+  "David Vayntrub is a Computer Science student at UC Riverside (graduating in 2027) focused on full-stack development, AI integration, and real-time systems. He cofounded Study Spot, an AI-powered study tool built with Next.js, Supabase, and the Anthropic LLM, and has shipped projects ranging from a voice-controlled self-moving chess set at ACM Riverside to BitWizards, a Blockly-powered educational platform built at Cutie Hack 2025. He works primarily in Python, TypeScript, and React.";
 const BROAD_TERMS = ["david", "vayntrub", "david vayntrub"];
 
 function SearchResults() {
