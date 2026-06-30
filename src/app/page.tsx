@@ -17,6 +17,12 @@ import { blogPosts } from "@/data/blogs";
 import { searchItems } from "@/lib/search";
 
 const DEFAULT_QUERY = "David Vayntrub";
+
+// Pre-written AI Overview for the default landing query. Shown instantly with
+// no API call (the answer is the same for every visitor, so there's no reason
+// to pay/wait for a live generation). Edit this freely.
+const DEFAULT_OVERVIEW =
+  "David Vayntrub is a Computer Science student at UC Riverside (expected 2027) focused on full-stack development, AI integration, and real-time systems. He cofounded Study Spot, an AI-powered study tool built with Next.js, Supabase, and the Anthropic LLM, and has shipped projects ranging from a voice-controlled self-moving chess set at ACM Riverside to BitWizards, a Blockly-powered educational platform built at Cutie Hack 2025. He works primarily in Python, TypeScript, and React.";
 const BROAD_TERMS = ["david", "vayntrub", "david vayntrub"];
 
 function SearchResults() {
@@ -93,9 +99,17 @@ function SearchResults() {
 
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
           <div className="flex-1 min-w-0">
-            {/* AI Overview — only for user-initiated searches (skip the default
-                seed so a plain homepage visit makes no model call). */}
-            {showAll && query !== DEFAULT_QUERY && <AiOverview query={query} />}
+            {/* AI Overview — static pre-written answer for the default landing
+                query (instant, no API call); live streamed answer for real
+                searches. */}
+            {showAll && (
+              <AiOverview
+                query={query}
+                staticAnswer={
+                  query === DEFAULT_QUERY ? DEFAULT_OVERVIEW : undefined
+                }
+              />
+            )}
 
             {!hasResults && (
               <div className="mb-6">

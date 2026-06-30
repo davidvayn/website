@@ -40,7 +40,12 @@ test('AI Overview does NOT call the API on a plain homepage load', async ({
   });
 
   await page.goto('/');
-  // Default seed query ("David Vayntrub") must not trigger a model call.
+  // Default seed query ("David Vayntrub") shows a static overview and must NOT
+  // trigger a model call.
+  await expect(page.getByText('AI Overview')).toBeVisible();
+  await expect(
+    page.getByText('David Vayntrub is a Computer Science student'),
+  ).toBeVisible();
   await page.waitForTimeout(500);
   expect(calls).toBe(0);
 

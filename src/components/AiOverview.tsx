@@ -2,7 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function AiOverview({ query }: { query: string }) {
+export default function AiOverview({
+  query,
+  staticAnswer,
+}: {
+  query: string;
+  /** When set, render this text immediately with no API call (used for the
+      default landing query so every visit is instant and free). */
+  staticAnswer?: string;
+}) {
   const [text, setText] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">(
     "idle",
@@ -12,6 +20,16 @@ export default function AiOverview({ query }: { query: string }) {
 
   useEffect(() => {
     if (!query.trim()) return;
+
+    // Pre-written overview (e.g. the default landing query): show instantly,
+    // no fetch.
+    if (staticAnswer) {
+      abortRef.current?.abort();
+      setErrorMessage("");
+      setText(staticAnswer);
+      setStatus("done");
+      return;
+    }
 
     // Cancel any in-flight request when the query changes.
     abortRef.current?.abort();
@@ -55,7 +73,7 @@ export default function AiOverview({ query }: { query: string }) {
     })();
 
     return () => controller.abort();
-  }, [query]);
+  }, [query, staticAnswer]);
 
   if (status === "idle") return null;
 
