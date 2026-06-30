@@ -86,6 +86,10 @@ export default function SearchBar() {
     setQuery(q);
     setInputValue(q);
     setShowSuggestions(false);
+    inputRef.current?.blur();
+    // Scroll to the top so the results refresh is visible, even when the
+    // query is unchanged (results are derived purely from the query).
+    window.scrollTo({ top: 0 });
   }
 
   const handleVoiceResult = useCallback(
