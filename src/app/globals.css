@@ -53,6 +53,14 @@
   box-sizing: border-box;
 }
 
+/* Animate the whole page's theme in sync so it doesn't change piece by piece */
+*,
+*::before,
+*::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease, fill 0.3s ease, box-shadow 0.3s ease;
+}
+
 html {
   max-width: 100%;
   overflow-x: hidden;
@@ -71,7 +79,6 @@ body {
   font-family: arial, sans-serif;
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {

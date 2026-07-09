@@ -157,7 +157,11 @@ function SearchResults() {
               </>
             )}
 
-            {showImages && <ImagesRow />}
+            {/* Kept mounted (hidden when inactive) so the preview images
+                fetch on page load instead of when the Images tab is opened. */}
+            <div className={showImages ? undefined : "hidden"}>
+              <ImagesRow />
+            </div>
 
             {showBlog &&
               blogPosts.map((post) => (

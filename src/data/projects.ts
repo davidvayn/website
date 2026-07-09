@@ -34,4 +34,16 @@ export const projects: Project[] = [
     details:
       "Nov 2025. Built BitWizards as an educational platform for K-12 students in a 12-hour hackathon. Created a fantasy-themed web experience using Next.js, React, and TypeScript, with Blockly-powered interactive programming blocks backed by real-time JavaScript execution. Deployed the finished app on Vercel.",
   },
+  {
+    id: "project-3",
+    title: "Personal Website",
+    url: "github.com › davidvayn › website",
+    href: "https://github.com/davidvayn/website",
+    snippet:
+      "A Google-search-styled personal portfolio built with <b>Next.js</b>, <b>React</b>, <b>TypeScript</b>, and <b>Tailwind CSS</b>, featuring an <b>AI Overview</b> search powered by <b>Gemini</b>.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Gemini"],
+    image: "/website.png",
+    details:
+      "2026. Designed and built a personal portfolio that reimagines a resume as a Google search results page. Implemented full-text search over projects and experience, an AI Overview powered by the Gemini API, voice search, and a synchronized light/dark mode. Built with Next.js, React, TypeScript, and Tailwind CSS.",
+  },
 ];

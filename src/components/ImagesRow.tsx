@@ -16,6 +16,10 @@ function projectCaption(project: (typeof projects)[number]) {
     return "BitWizards Blockly-powered CS learning platform from Cutie Hack";
   }
 
+  if (project.id === "project-3") {
+    return "Google-styled portfolio with AI Overview search, built in Next.js";
+  }
+
   return `${project.title} preview`;
 }
 
@@ -48,6 +52,7 @@ export default function ImagesRow() {
                   alt={`${project.title} preview`}
                   width={360}
                   height={270}
+                  priority
                   className="h-full w-full object-cover transition-transform group-hover:scale-[1.02]"
                 />
               ) : (
