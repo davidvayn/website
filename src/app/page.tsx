@@ -88,6 +88,13 @@ function SearchResults() {
 
   const resultCount = filteredProjects.length + filteredExperiences.length;
 
+  // Number of result links currently listed, used to size the pagination.
+  const paginatedCount = showBlog
+    ? blogPosts.length
+    : showImages
+    ? filteredProjects.length
+    : resultCount;
+
   return (
     <div className="min-h-screen flex flex-col">
       <GoogleHeader />
@@ -194,7 +201,7 @@ function SearchResults() {
               </>
             )}
 
-            <Pagination />
+            <Pagination totalResults={paginatedCount} />
           </div>
 
           <div className="hidden lg:block">
