@@ -1,5 +1,9 @@
 "use client";
 
+import { links } from "@/data/links";
+
+const linkUrl = (id: string) => links.find((l) => l.id === id)?.url ?? "#";
+
 export default function KnowledgePanel() {
   return (
     <aside
@@ -71,7 +75,7 @@ export default function KnowledgePanel() {
         </h4>
         <div className="flex gap-3">
           <a
-            href="https://github.com/davidvayn"
+            href={linkUrl("github")}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm hover:underline"
@@ -83,7 +87,7 @@ export default function KnowledgePanel() {
             GitHub
           </a>
           <a
-            href="https://www.linkedin.com/in/david-vayntrub-6b5b1b332"
+            href={linkUrl("linkedin")}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm hover:underline"

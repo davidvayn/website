@@ -1,6 +1,63 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { resolveLink, type ResolvedLink } from "@/lib/links";
+import OverviewLink from "@/components/OverviewLink";
+
+// Matches a complete link token: [visible text](id). The model is instructed to
+// emit these (see src/lib/corpus.ts). Ids are resolved against our own registry,
+// so a token whose id we don't recognize is dropped to plain text.
+const LINK_TOKEN = /\[([^\]\n]+)\]\(([^)\s]+)\)/g;
+
+/**
+ * Parse accumulated overview text into inline React nodes, resolving link
+ * tokens to real anchors and collecting the deduped set of sources referenced.
+ * We parse the whole accumulated string each render (not per-chunk), so a token
+ * split across stream chunks just completes on a later render. While still
+ * streaming, a half-typed trailing token is hidden until it closes.
+ */
+function parseOverview(
+  text: string,
+  loading: boolean,
+): { nodes: ReactNode[]; sources: ResolvedLink[] } {
+  const nodes: ReactNode[] = [];
+  const sources = new Map<string, ResolvedLink>();
+  let lastIndex = 0;
+  let key = 0;
+
+  LINK_TOKEN.lastIndex = 0;
+  for (let m = LINK_TOKEN.exec(text); m; m = LINK_TOKEN.exec(text)) {
+    const [full, label, id] = m;
+    if (m.index > lastIndex) nodes.push(text.slice(lastIndex, m.index));
+    lastIndex = m.index + full.length;
+
+    const link = resolveLink(id);
+    if (link) {
+      sources.set(link.id, link);
+      nodes.push(
+        <OverviewLink
+          key={`l${key++}`}
+          link={link}
+          label={label}
+          variant="inline"
+        />,
+      );
+    } else {
+      // Unknown/invented id — never render a live link; keep the visible words.
+      nodes.push(label);
+    }
+  }
+
+  let tail = text.slice(lastIndex);
+  // Hide a partially-streamed token (an unclosed "[…") so brackets don't flash.
+  if (loading) {
+    const open = tail.indexOf("[");
+    if (open !== -1) tail = tail.slice(0, open);
+  }
+  if (tail) nodes.push(tail);
+
+  return { nodes, sources: [...sources.values()] };
+}
 
 export default function AiOverview({
   query,
@@ -77,6 +134,8 @@ export default function AiOverview({
 
   if (status === "idle") return null;
 
+  const { nodes, sources } = parseOverview(text, status === "loading");
+
   return (
     <div
       className="mb-6 rounded-2xl border p-4"
@@ -127,15 +186,29 @@ export default function AiOverview({
           style={{ color: "var(--text)" }}
           aria-live="polite"
         >
-          {text}
+          {nodes}
           {status === "loading" && (
             <span className="ml-0.5 inline-block animate-pulse">▍</span>
           )}
         </p>
       )}
 
+      {status !== "error" && sources.length > 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span
+            className="text-xs font-medium"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Sources
+          </span>
+          {sources.map((s) => (
+            <OverviewLink key={s.id} link={s} label={s.label} variant="chip" />
+          ))}
+        </div>
+      )}
+
       <p className="mt-3 text-xs" style={{ color: "var(--text-secondary)" }}>
-        AI-generated overview 
+        AI-generated overview
       </p>
     </div>
   );
