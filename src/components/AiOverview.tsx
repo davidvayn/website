@@ -9,6 +9,13 @@ import OverviewLink from "@/components/OverviewLink";
 // so a token whose id we don't recognize is dropped to plain text.
 const LINK_TOKEN = /\[([^\]\n]+)\]\(([^)\s]+)\)/g;
 
+// Session-scoped cache of completed overviews, keyed by query. This component
+// unmounts when the user leaves the "all" tab, so without a cache, returning to
+// it would re-stream (and re-animate, and re-bill) the same answer. Instead the
+// answer is streamed once, stored here, and restored instantly on remount or
+// when the same query is searched again. Lives for the page session only.
+const overviewCache = new Map<string, string>();
+
 /**
  * Parse accumulated overview text into inline React nodes, resolving link
  * tokens to real anchors and collecting the deduped set of sources referenced.
@@ -88,6 +95,17 @@ export default function AiOverview({
       return;
     }
 
+    // Already generated this query this session (e.g. after a tab switch):
+    // restore instantly, no fetch and no typing animation.
+    const cached = overviewCache.get(query);
+    if (cached !== undefined) {
+      abortRef.current?.abort();
+      setErrorMessage("");
+      setText(cached);
+      setStatus("done");
+      return;
+    }
+
     // Cancel any in-flight request when the query changes.
     abortRef.current?.abort();
     const controller = new AbortController();
@@ -113,15 +131,22 @@ export default function AiOverview({
 
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
-        let streamed = false;
+        let full = "";
         for (;;) {
           const { done, value } = await reader.read();
           if (done) break;
-          streamed = true;
-          setText((prev) => prev + decoder.decode(value, { stream: true }));
+          const chunk = decoder.decode(value, { stream: true });
+          full += chunk;
+          setText((prev) => prev + chunk);
         }
-        setStatus(streamed ? "done" : "error");
-        if (!streamed) setErrorMessage("AI search is unavailable right now.");
+        if (full) {
+          // Cache the completed answer so future remounts skip the round trip.
+          overviewCache.set(query, full);
+          setStatus("done");
+        } else {
+          setStatus("error");
+          setErrorMessage("AI search is unavailable right now.");
+        }
       } catch (err) {
         if ((err as Error).name === "AbortError") return;
         setErrorMessage((err as Error).message);
