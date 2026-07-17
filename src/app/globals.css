@@ -21,6 +21,13 @@
   --search-bg: #ffffff;
   --search-border: #dfe1e5;
   --search-shadow: rgba(32, 33, 36, 0.28);
+  /* Hover highlight for menu items sitting ON an elevated surface (the search
+     suggestion dropdown, whose surface is --search-bg). Must contrast with
+     --search-bg, unlike --hover-bg which is tuned for the page background. */
+  --menu-hover-bg: #f1f3f4;
+  /* Loading-skeleton bars. Must contrast with the AI Overview card
+     (--search-bg) in BOTH themes, so it can't reuse --hover-bg. */
+  --skeleton-bg: #e3e6e8;
   --knowledge-bg: #ffffff;
   --knowledge-border: #dfe1e5;
   --sponsored-bg: #f1f3f4;
@@ -42,6 +49,10 @@
   --search-bg: #303134;
   --search-border: #5f6368;
   --search-shadow: rgba(0, 0, 0, 0.5);
+  /* Lighter than --search-bg (#303134) so the highlight is actually visible on
+     the elevated dropdown surface, where --hover-bg (#303134) would vanish. */
+  --menu-hover-bg: #3c4043;
+  --skeleton-bg: #494c50;
   --knowledge-bg: #303134;
   --knowledge-border: #3c4043;
   --sponsored-bg: #303134;
@@ -81,8 +92,14 @@ body {
   padding: 0;
 }
 
-a {
-  text-decoration: none;
+/* Keep this in the `base` layer. Tailwind's utilities layer outranks `base`,
+   so `hover:underline` (and other text-decoration utilities) still win over
+   this reset. If this rule were left unlayered it would beat every layered
+   utility regardless of specificity, silently killing link hover underlines. */
+@layer base {
+  a {
+    text-decoration: none;
+  }
 }
 
 ::selection {

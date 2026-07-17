@@ -114,9 +114,10 @@ function SearchResults() {
             {showAll && (
               <AiOverview
                 query={query}
-                staticAnswer={
-                  query === DEFAULT_QUERY ? DEFAULT_OVERVIEW : undefined
-                }
+                // Any name/broad query (e.g. the "david vayntrub" suggestion,
+                // regardless of case) gets the pre-written overview — same
+                // answer for everyone, so there's no reason to fetch/stream it.
+                staticAnswer={isBroadSearch ? DEFAULT_OVERVIEW : undefined}
               />
             )}
 

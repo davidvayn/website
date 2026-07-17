@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { resolveLink, type ResolvedLink } from "@/lib/links";
 import OverviewLink from "@/components/OverviewLink";
 
@@ -66,6 +66,20 @@ function parseOverview(
   return { nodes, sources: [...sources.values()] };
 }
 
+type OverviewStatus = "idle" | "loading" | "done" | "error";
+
+// An answer we can render WITHOUT a network request: the pre-written static
+// overview, or a previously-streamed answer cached this session (e.g. after a
+// tab switch). Returns undefined when the query must be fetched live.
+function resolveImmediate(
+  query: string,
+  staticAnswer?: string,
+): string | undefined {
+  if (!query.trim()) return undefined;
+  if (staticAnswer) return staticAnswer;
+  return overviewCache.get(query);
+}
+
 export default function AiOverview({
   query,
   staticAnswer,
@@ -75,45 +89,31 @@ export default function AiOverview({
       default landing query so every visit is instant and free). */
   staticAnswer?: string;
 }) {
+  const immediate = resolveImmediate(query, staticAnswer);
+  const needsFetch = !immediate && query.trim().length > 0;
+
+  // Fetch-path state — only meaningful when there's no immediate answer. It's
+  // reset during render (not in an effect) when a new query needs a live fetch,
+  // following React's "adjust state when a prop changes" pattern, so the effect
+  // below stays purely for the async request and never calls setState in its
+  // body.
+  const [fetchedFor, setFetchedFor] = useState<string | null>(null);
   const [text, setText] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">(
-    "idle",
-  );
+  const [status, setStatus] = useState<OverviewStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const abortRef = useRef<AbortController | null>(null);
 
-  useEffect(() => {
-    if (!query.trim()) return;
-
-    // Pre-written overview (e.g. the default landing query): show instantly,
-    // no fetch.
-    if (staticAnswer) {
-      abortRef.current?.abort();
-      setErrorMessage("");
-      setText(staticAnswer);
-      setStatus("done");
-      return;
-    }
-
-    // Already generated this query this session (e.g. after a tab switch):
-    // restore instantly, no fetch and no typing animation.
-    const cached = overviewCache.get(query);
-    if (cached !== undefined) {
-      abortRef.current?.abort();
-      setErrorMessage("");
-      setText(cached);
-      setStatus("done");
-      return;
-    }
-
-    // Cancel any in-flight request when the query changes.
-    abortRef.current?.abort();
-    const controller = new AbortController();
-    abortRef.current = controller;
-
+  if (needsFetch && fetchedFor !== query) {
+    setFetchedFor(query);
     setText("");
     setErrorMessage("");
     setStatus("loading");
+  }
+
+  useEffect(() => {
+    if (!needsFetch) return;
+
+    // Cancels the in-flight request when the query changes or on unmount.
+    const controller = new AbortController();
 
     (async () => {
       try {
@@ -155,11 +155,17 @@ export default function AiOverview({
     })();
 
     return () => controller.abort();
-  }, [query, staticAnswer]);
+  }, [query, needsFetch]);
 
-  if (status === "idle") return null;
+  const displayStatus: OverviewStatus = immediate ? "done" : status;
+  const displayText = immediate ?? text;
 
-  const { nodes, sources } = parseOverview(text, status === "loading");
+  if (displayStatus === "idle") return null;
+
+  const { nodes, sources } = parseOverview(
+    displayText,
+    displayStatus === "loading",
+  );
 
   return (
     <div
@@ -186,23 +192,23 @@ export default function AiOverview({
         </span>
       </div>
 
-      {status === "error" ? (
+      {displayStatus === "error" ? (
         <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
           {errorMessage || "AI search is unavailable right now."}
         </p>
-      ) : status === "loading" && !text ? (
+      ) : displayStatus === "loading" && !displayText ? (
         <div className="space-y-2" aria-label="Generating AI overview">
           <div
             className="h-3 w-full animate-pulse rounded"
-            style={{ backgroundColor: "var(--hover-bg)" }}
+            style={{ backgroundColor: "var(--skeleton-bg)" }}
           />
           <div
             className="h-3 w-11/12 animate-pulse rounded"
-            style={{ backgroundColor: "var(--hover-bg)" }}
+            style={{ backgroundColor: "var(--skeleton-bg)" }}
           />
           <div
             className="h-3 w-3/5 animate-pulse rounded"
-            style={{ backgroundColor: "var(--hover-bg)" }}
+            style={{ backgroundColor: "var(--skeleton-bg)" }}
           />
         </div>
       ) : (
@@ -212,13 +218,13 @@ export default function AiOverview({
           aria-live="polite"
         >
           {nodes}
-          {status === "loading" && (
+          {displayStatus === "loading" && (
             <span className="ml-0.5 inline-block animate-pulse">▍</span>
           )}
         </p>
       )}
 
-      {status !== "error" && sources.length > 0 && (
+      {displayStatus !== "error" && sources.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <span
             className="text-xs font-medium"

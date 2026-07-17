@@ -10,8 +10,11 @@ import {
 } from "react";
 import { useSearch } from "@/hooks/useSearch";
 import { useVoiceSearch } from "@/hooks/useVoiceSearch";
-import { suggestions } from "@/data/suggestions";
-import { getSearchKeywordCandidates, matchVoiceQuery } from "@/lib/search";
+import {
+  getSearchKeywordCandidates,
+  getSuggestions,
+  matchVoiceQuery,
+} from "@/lib/search";
 
 function subscribeToHydration(callback: () => void) {
   queueMicrotask(callback);
@@ -51,11 +54,7 @@ export default function SearchBar() {
   }
 
   function getFilteredSuggestions(value: string) {
-    return value.trim()
-      ? suggestions.filter((s) =>
-          s.toLowerCase().includes(value.toLowerCase())
-        )
-      : suggestions.slice(0, 5);
+    return getSuggestions(value);
   }
 
   function prepareSuggestions(value = inputValue) {
@@ -254,7 +253,7 @@ export default function SearchBar() {
             <button
               key={suggestion}
               onClick={() => handleSearch(suggestion)}
-              className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[var(--hover-bg)] text-sm"
+              className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[var(--menu-hover-bg)] text-sm"
               style={{ color: "var(--text)" }}
             >
               <svg

@@ -256,6 +256,105 @@ export function matchVoiceQuery(transcript: string, candidates: string[]) {
   return bestCandidate;
 }
 
+// Short, human-phrased topics that aren't literal titles/tags but that people
+// actually type. Ranked alongside the data-derived pool below.
+const TOPIC_SUGGESTIONS = [
+  "projects",
+  "experience",
+  "resume",
+  "contact",
+  "skills",
+  "machine learning",
+  "voice search",
+  "self-moving chess set",
+  "hackathon projects",
+  "ai overview",
+  "full stack developer",
+];
+
+// Built once from the same data the results render from, so recommendations can
+// never drift from the site's actual content.
+let suggestionPool: string[] | null = null;
+
+function buildSuggestionPool(): string[] {
+  if (suggestionPool) {
+    return suggestionPool;
+  }
+
+  const pool: string[] = [...suggestions, ...TOPIC_SUGGESTIONS];
+
+  for (const project of projects) {
+    pool.push(project.title, ...project.tags);
+  }
+  for (const experience of experiences) {
+    pool.push(experience.title);
+  }
+  for (const post of blogPosts) {
+    pool.push(post.title, ...post.tags);
+  }
+
+  const seen = new Set<string>();
+  suggestionPool = pool.filter((candidate) => {
+    const key = normalize(candidate);
+    if (!key || seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+
+  return suggestionPool;
+}
+
+/**
+ * Ranked autocomplete recommendations for the search box. Unlike a plain
+ * substring filter over a fixed name list, this scores a pool built from the
+ * live corpus (projects, experience, tags, topics) with the same fuzzy matcher
+ * the results use — so typing a topic like "chess", "react", or "ml" actually
+ * surfaces relevant recommendations instead of an empty dropdown.
+ */
+export function getSuggestions(value: string, limit = 8): string[] {
+  const normalizedValue = normalize(value);
+
+  // Empty box: show the canonical name-based searches, like Google's recents.
+  if (!normalizedValue) {
+    return suggestions.slice(0, Math.min(limit, 6));
+  }
+
+  const valueTokens = tokenize(normalizedValue);
+  const pool = buildSuggestionPool();
+
+  const ranked = pool
+    .map((candidate, index) => {
+      const normalizedCandidate = normalize(candidate);
+      let score = scoreText(normalizedValue, valueTokens, [candidate]);
+
+      // Prefix/substring boosts make it feel like classic autocomplete: what
+      // you're literally typing floats to the top.
+      if (normalizedCandidate.startsWith(normalizedValue)) {
+        score += 20;
+      } else if (normalizedCandidate.includes(` ${normalizedValue}`)) {
+        score += 12;
+      } else if (normalizedCandidate.includes(normalizedValue)) {
+        score += 8;
+      }
+
+      return { candidate, score, index };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((left, right) => right.score - left.score || left.index - right.index)
+    .slice(0, limit)
+    .map(({ candidate }) => candidate);
+
+  // Degrade gracefully to a substring match if nothing scored (very rare).
+  if (ranked.length === 0) {
+    const needle = value.toLowerCase();
+    return suggestions.filter((s) => s.toLowerCase().includes(needle));
+  }
+
+  return ranked;
+}
+
 export function searchItems<T>(items: T[], query: string, options: SearchOptions<T>) {
   const normalizedQuery = normalize(query);
 
