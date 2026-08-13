@@ -26,15 +26,26 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
       let bluePixelCount = 0;
+      let visibleEdgePixelCount = 0;
 
       for (let index = 0; index < pixels.length; index += 4) {
         const red = pixels[index];
         const green = pixels[index + 1];
         const blue = pixels[index + 2];
         const alpha = pixels[index + 3];
+        const pixelNumber = index / 4;
+        const x = pixelNumber % canvas.width;
+        const y = Math.floor(pixelNumber / canvas.width);
 
         if (alpha > 128 && blue > 180 && blue > red * 2 && blue > green) {
           bluePixelCount += 1;
+        }
+
+        if (
+          alpha > 32 &&
+          (x === 0 || x === canvas.width - 1 || y === 0 || y === canvas.height - 1)
+        ) {
+          visibleEdgePixelCount += 1;
         }
       }
 
@@ -53,7 +64,8 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
       const isTransparent = ({ alpha }: ReturnType<typeof pixel>) => alpha < 32;
 
       return (
-        bluePixelCount > 700 &&
+        bluePixelCount > 1500 &&
+        visibleEdgePixelCount === 0 &&
         isBlue(pixel(18, 32)) &&
         isBlue(pixel(47, 32)) &&
         isTransparent(pixel(32, 32)) &&
