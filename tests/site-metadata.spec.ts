@@ -11,7 +11,7 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
   await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1);
 
   for (const href of iconHrefs) {
-    const isDavidIcon = await page.evaluate(async (iconHref) => {
+    const isDvaynD = await page.evaluate(async (iconHref) => {
       const image = new Image();
       image.src = iconHref;
       await image.decode();
@@ -25,8 +25,7 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
 
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
-      let hasBlue = false;
-      let hasWhite = false;
+      let bluePixelCount = 0;
 
       for (let index = 0; index < pixels.length; index += 4) {
         const red = pixels[index];
@@ -34,27 +33,34 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
         const blue = pixels[index + 2];
         const alpha = pixels[index + 3];
 
-        if (alpha > 128 && (red > 120 || green > 120 || blue > 120)) {
-          const isGrayscale =
-            Math.abs(red - green) < 20 &&
-            Math.abs(green - blue) < 20 &&
-            Math.abs(red - blue) < 20;
-
-          if (!isGrayscale) hasBlue = true;
+        if (alpha > 128 && blue > 180 && blue > red * 2 && blue > green) {
+          bluePixelCount += 1;
         }
-
-        if (alpha > 128 && red > 240 && green > 240 && blue > 240) hasWhite = true;
       }
 
-      const tilePixel = (8 * canvas.width + 8) * 4;
-      const hasBlueTile =
-        pixels[tilePixel + 3] > 200 &&
-        pixels[tilePixel + 2] > 200 &&
-        pixels[tilePixel + 2] > pixels[tilePixel];
+      const pixel = (x: number, y: number) => {
+        const index = (y * canvas.width + x) * 4;
+        return {
+          red: pixels[index],
+          green: pixels[index + 1],
+          blue: pixels[index + 2],
+          alpha: pixels[index + 3],
+        };
+      };
 
-      return hasBlue && hasWhite && hasBlueTile;
+      const isBlue = ({ red, green, blue, alpha }: ReturnType<typeof pixel>) =>
+        alpha > 200 && blue > 180 && blue > red * 2 && blue > green;
+      const isTransparent = ({ alpha }: ReturnType<typeof pixel>) => alpha < 32;
+
+      return (
+        bluePixelCount > 700 &&
+        isBlue(pixel(18, 32)) &&
+        isBlue(pixel(47, 32)) &&
+        isTransparent(pixel(32, 32)) &&
+        isTransparent(pixel(4, 4))
+      );
     }, href);
 
-    expect(isDavidIcon, `${href} should contain the blue-and-white D icon`).toBe(true);
+    expect(isDvaynD, `${href} should contain the big blue D from the Dvayn logo`).toBe(true);
   }
 });
