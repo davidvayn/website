@@ -11,7 +11,7 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
   await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1);
 
   for (const href of iconHrefs) {
-    const hasBrandColor = await page.evaluate(async (iconHref) => {
+    const isDavidIcon = await page.evaluate(async (iconHref) => {
       const image = new Image();
       image.src = iconHref;
       await image.decode();
@@ -25,6 +25,8 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
 
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
       const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      let hasBlue = false;
+      let hasWhite = false;
 
       for (let index = 0; index < pixels.length; index += 4) {
         const red = pixels[index];
@@ -38,13 +40,21 @@ test('phone link previews advertise the custom site icon', async ({ page }) => {
             Math.abs(green - blue) < 20 &&
             Math.abs(red - blue) < 20;
 
-          if (!isGrayscale) return true;
+          if (!isGrayscale) hasBlue = true;
         }
+
+        if (alpha > 128 && red > 240 && green > 240 && blue > 240) hasWhite = true;
       }
 
-      return false;
+      const tilePixel = (8 * canvas.width + 8) * 4;
+      const hasBlueTile =
+        pixels[tilePixel + 3] > 200 &&
+        pixels[tilePixel + 2] > 200 &&
+        pixels[tilePixel + 2] > pixels[tilePixel];
+
+      return hasBlue && hasWhite && hasBlueTile;
     }, href);
 
-    expect(hasBrandColor, `${href} should contain the custom icon colors`).toBe(true);
+    expect(isDavidIcon, `${href} should contain the blue-and-white D icon`).toBe(true);
   }
 });
