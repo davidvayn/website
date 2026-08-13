@@ -7,6 +7,11 @@ export const metadata: Metadata = {
     "David Vayntrub is a Full-Stack Developer based in San Francisco, CA with 3 years of experience building modern web applications.",
   icons: {
     icon: "/favicon.svg",
+    apple: {
+      url: "/apple-icon.png",
+      sizes: "180x180",
+      type: "image/png",
+    },
   },
 };
 
