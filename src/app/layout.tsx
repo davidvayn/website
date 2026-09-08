@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "David Vayntrub - Full-Stack Developer",
+  title: "David Vayntrub - Software Engineer",
   description:
-    "David Vayntrub is a Full-Stack Developer based in San Francisco, CA with 3 years of experience building modern web applications.",
+    "David Vayntrub is a UC Riverside Computer Science student and software engineer focused on full-stack development, AI/ML, and real-time systems.",
   icons: {
     icon: "/favicon.svg",
     apple: {

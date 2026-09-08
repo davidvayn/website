@@ -53,7 +53,12 @@ export function buildCorpus(): string {
 
   sections.push(
     "LINKS:\n" +
-      links.map((l) => `- ${l.label} [id: ${l.id}]`).join("\n"),
+      links
+        .map(
+          (l) =>
+            `- ${l.label} [id: ${l.id}]${l.description ? `: ${l.description}` : ""}`,
+        )
+        .join("\n"),
   );
 
   return sections.join("\n\n");

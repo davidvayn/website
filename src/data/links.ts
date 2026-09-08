@@ -36,6 +36,12 @@ export const links: SiteLink[] = [
     description: "vayntrub2006@gmail.com",
   },
   {
+    id: "phone",
+    label: "Phone",
+    url: "tel:+14154650222",
+    description: "415-465-0222",
+  },
+  {
     id: "resume",
     label: "Resume",
     url: "/resume.pdf",

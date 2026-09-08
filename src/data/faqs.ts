@@ -7,7 +7,7 @@ export const faqs: FAQ[] = [
   {
     question: "What technologies does David Vayntrub use?",
     answer:
-      "David is proficient in Python, TypeScript, JavaScript, Java, C++, and SQL. He works extensively with frameworks like Next.js, React, and Node.js/Express, and tools like Supabase, Convex, and Tailwind CSS. He also has specialized experience with AI tools like Anthropic LLM, LlamaParse, and Whisper C++.",
+      "David works with Python, TypeScript, JavaScript, Rust, C++, Java, SQL, and HTML/CSS. His toolkit includes React, Next.js, Tailwind CSS, scikit-learn, pandas, NumPy, Google Blockly, PyAudio, SpeechRecognition, Supabase/PostgreSQL, IndexedDB, Git, Figma, Jupyter Notebooks, Gemini, Anthropic, LlamaParse, and REST APIs.",
   },
   {
     question: "Where does David Vayntrub go to school?",
@@ -17,6 +17,6 @@ export const faqs: FAQ[] = [
   {
     question: "What is David Vayntrub's specialized experience?",
     answer:
-      "David specializes in AI integration, full-stack development, and real-time systems. His recent work includes cofounding StudySpot (an AI study tool), developing voice-controlled hardware at ACM Riverside, and building BitWizards, a Blockly-powered educational platform created at Cutie Hack.",
+      "David specializes in AI integration, full-stack development, machine learning, and real-time systems. His work includes cofounding StudySpot, developing voice control for a self-moving chess set, shipping a Blockly programming environment, and building a Rust CFR/neural poker solver with 95.2% action-EV precision and 100% policy-lookup coverage.",
   },
 ];

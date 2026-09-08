@@ -24,7 +24,7 @@ const DEFAULT_QUERY = "David Vayntrub";
 // Link tokens ([text](id)) resolve to real URLs in AiOverview, exactly like a
 // live answer — so the landing view shows inline links + Sources chips for free.
 const DEFAULT_OVERVIEW =
-  "David Vayntrub is a Computer Science student at UC Riverside (graduating in 2027) focused on full-stack development, AI integration, and real-time systems. He cofounded [Study Spot](exp-1), an AI-powered study tool built with Next.js, Supabase, and the Anthropic LLM, and has shipped projects ranging from a voice-controlled self-moving chess set at [ACM Riverside](exp-2) to [BitWizards](project-2), a Blockly-powered educational platform built at Cutie Hack 2025. He works primarily in Python, TypeScript, and React.";
+  "David Vayntrub is a Computer Science student at UC Riverside (graduating in 2027) focused on full-stack development, AI/ML, and real-time systems. As a cofounding engineer at [StudySpot](exp-1), he reduced onboarding time by 50% and accelerated document ingestion by 30%; at [ACM Riverside Forge](exp-2), he cut voice-command Word Error Rate by 73%. He also built an [open-source poker solver](project-4) with 95.2% action-EV precision, 100% policy-lookup coverage, and 114 automated tests.";
 const BROAD_TERMS = ["david", "vayntrub", "david vayntrub"];
 
 function SearchResults() {

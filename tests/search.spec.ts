@@ -60,7 +60,14 @@ test('typed search updates results and URL state', async ({ page }) => {
   await searchBox.press('Enter');
 
   await expect(page).toHaveURL(/\?q=python/);
-  await expect(page.getByText('Analysis of Machine Learning Methods')).toBeVisible();
+  await expect(
+    page
+      .getByRole('link', {
+        name: 'Analysis of Machine Learning Methods with Regression',
+        exact: true,
+      })
+      .last(),
+  ).toBeVisible();
 });
 
 test('voice search matches heard words to a site keyword', async ({ page }) => {
@@ -70,9 +77,11 @@ test('voice search matches heard words to a site keyword', async ({ page }) => {
   await page.getByRole('button', { name: 'Search by voice' }).click();
 
   await expect(page.getByRole('textbox', { name: 'Search' })).toHaveValue(
-    'Analysis of Machine Learning Methods'
+    'Analysis of Machine Learning Methods with Regression',
   );
-  await expect(page).toHaveURL(/q=Analysis\+of\+Machine\+Learning\+Methods/);
+  await expect(page).toHaveURL(
+    /q=Analysis\+of\+Machine\+Learning\+Methods\+with\+Regression/,
+  );
 });
 
 test('voice search does not add the site owner name to generic queries', async ({
@@ -124,4 +133,33 @@ test('voice search is disabled when speech recognition is unavailable', async ({
       name: 'Voice search is not supported in this browser',
     })
   ).toBeDisabled();
+});
+
+test('updated resume achievements are searchable and the PDF is downloadable', async ({
+  page,
+}) => {
+  await page.route('**/api/ai-search', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'text/plain; charset=utf-8',
+      body: 'David built an open-source poker solver.',
+    });
+  });
+
+  await page.goto('/?q=poker');
+
+  await expect(
+    page.getByRole('link', { name: 'Open Source Poker Solver', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText(/95\.2% action-EV precision/)).toBeVisible();
+  await expect(page.getByText(/100% policy-lookup coverage/)).toBeVisible();
+  await expect(page.getByText(/114 automated tests/)).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Phone' })).toHaveAttribute(
+    'href',
+    'tel:+14154650222',
+  );
+
+  const resumeResponse = await page.request.get('/resume.pdf');
+  expect(resumeResponse.ok()).toBe(true);
+  expect(resumeResponse.headers()['content-type']).toContain('application/pdf');
 });

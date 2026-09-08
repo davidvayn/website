@@ -24,7 +24,9 @@ test('AI Overview renders the streamed answer for a user search', async ({
   await searchBox.pressSequentially('what hackathons has David done?');
   await searchButton.click();
 
-  await expect(page.getByText('AI Overview')).toBeVisible();
+  await expect(
+    page.getByText('AI Overview', { exact: true }).first(),
+  ).toBeVisible();
   await expect(
     page.getByText('David built BitWizards at Cutie Hack 2025.'),
   ).toBeVisible();
@@ -42,7 +44,9 @@ test('AI Overview does NOT call the API on a plain homepage load', async ({
   await page.goto('/');
   // Default seed query ("David Vayntrub") shows a static overview and must NOT
   // trigger a model call.
-  await expect(page.getByText('AI Overview')).toBeVisible();
+  await expect(
+    page.getByText('AI Overview', { exact: true }).first(),
+  ).toBeVisible();
   await expect(
     page.getByText('David Vayntrub is a Computer Science student'),
   ).toBeVisible();

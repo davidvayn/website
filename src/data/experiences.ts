@@ -10,22 +10,22 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     id: "exp-1",
-    title: "Cofounding Engineer - Study Spot",
+    title: "Cofounding Engineer - StudySpot",
     url: "dvayn.com › experience › study-spot",
-    href: "https://github.com/twaldin/studyspot",
+    href: "https://studyspot.us",
     snippet:
-      "Cofounding Engineer at <b>Study Spot</b>. AI-based study tool using <b>Anthropic LLM</b>, <b>Next.js</b>, and <b>Supabase</b>. Integrated Canvas LMS API and LlamaParse.",
+      "Built an AI study tool with <b>Next.js</b>, <b>TypeScript</b>, <b>Supabase</b>, and the <b>Anthropic LLM</b>, cutting onboarding time by <b>50%</b>.",
     details:
-      "May 2025 - Sep 2025 · San Francisco, CA. AI-based study tool that uses school documents as context with the Anthropic LLM. Built with Next.js, TypeScript, and Supabase. Integrated Canvas LMS API to determine courses and upload documents based on API key, decreasing onboarding time by 50%. Improved document ingestion speed by 30% using LlamaParse.",
+      "May 2025 - Sep 2025. Cofounded an AI study tool that uses school documents as context for the Anthropic LLM, built with a Next.js and TypeScript frontend and Supabase backend. Integrated the Canvas LMS API to identify courses and upload documents from an API key, decreasing new-user onboarding time by 50%. Improved document-ingestion speed by 30% by integrating LlamaParse.",
   },
   {
     id: "exp-2",
-    title: "Software Engineer - ACM Riverside",
+    title: "Software Engineer - ACM Riverside Forge",
     url: "dvayn.com › experience › acm-riverside",
     href: "https://github.com/acm-ucr/wizard-chess",
     snippet:
-      "Software Engineer at <b>ACM Riverside</b>. Developed a self-moving chess set using <b>Python</b>, <b>SpeechRecognizer</b>, and <b>Whisper C++</b>.",
+      "Developed voice control for a self-moving chess set, reducing speech-recognition Word Error Rate by <b>73%</b>.",
     details:
-      "Jan 2025 - Mar 2025 · Riverside, CA. Collaborated on a 10-member team to develop a self-moving chess set. Utilized Python SpeechRecognizer and PyAudio to detect and parse voice commands. Compared Whisper C++ speech-to-text model against Python SpeechRecognizer for speech accuracy to determine optimal implementation.",
+      "Jan 2025 - Mar 2025. Collaborated on a 10-member team to develop a self-moving chess set. Used Python SpeechRecognition and PyAudio to detect and parse voice commands, then optimized the speech-processing pipeline to reduce Word Error Rate by 73%, from 15% to 4%.",
   },
 ];

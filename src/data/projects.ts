@@ -12,15 +12,22 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "project-1",
-    title: "Analysis of Machine Learning Methods",
+    title: "Analysis of Machine Learning Methods with Regression",
     url: "dvayn.com › projects › ml-analysis",
     href: "/analysis-of-machine-learning-methods.pdf",
     snippet:
-      "Analyzed classification and regression models using <b>Jupyter Notebook</b>, <b>Python</b> (NumPy, Pandas), <b>SVM</b>, and <b>KNN</b>.",
-    tags: ["Python", "Jupyter", "Machine Learning", "NumPy", "Pandas"],
+      "Built a classification pipeline across <b>32,560+ census records</b>, achieving <b>78.01% accuracy</b> with Logistic Regression.",
+    tags: [
+      "Python",
+      "scikit-learn",
+      "Jupyter",
+      "Machine Learning",
+      "NumPy",
+      "Pandas",
+    ],
     image: "/ml-methods-page-18.png",
     details:
-      "Aug 2022 - Mar 2024. Analyzed classification models: Decision Trees, Logistic Regression, SVM, and KNN. Used NumPy and Pandas for data visualization and handling. Wrote a 20-page paper analyzing algorithm effectiveness based on multivariable datasets influencing income.",
+      "Aug 2022 - Mar 2024. Created a classification pipeline across more than 32,560 U.S. Census records to predict adult income brackets, using NumPy and Pandas for data handling and visualization. Achieved 78.01% prediction accuracy with Logistic Regression after evaluating Decision Trees, KNN, and SVM in scikit-learn using 5-fold cross-validation. Wrote a 20-page research paper detailing the methodology and comparative results.",
   },
   {
     id: "project-2",
@@ -28,11 +35,11 @@ export const projects: Project[] = [
     url: "bitwizards-seven.vercel.app",
     href: "https://bitwizards-seven.vercel.app/",
     snippet:
-      "Fantasy-themed educational platform built for <b>Cutie Hack 2025</b> using <b>Next.js</b>, <b>React</b>, <b>TypeScript</b>, and the <b>Blockly Library</b>.",
+      "Built a fantasy-themed visual programming environment with <b>15+ custom blocks</b> during the <b>12-hour Cutie Hack 2025</b>.",
     tags: ["Next.js", "React", "TypeScript", "Blockly", "Vercel"],
     image: "/bitwizards-home.png",
     details:
-      "Nov 2025. Built BitWizards as an educational platform for K-12 students in a 12-hour hackathon. Created a fantasy-themed web experience using Next.js, React, and TypeScript, with Blockly-powered interactive programming blocks backed by real-time JavaScript execution. Deployed the finished app on Vercel.",
+      "Nov 2025. Served as Fullstack Developer and shipped BitWizards during a 12-hour hackathon. Engineered an interactive visual programming environment with Next.js, React, TypeScript, and Blockly, mapping custom block-based logic into executable JavaScript. Designed more than 15 custom syntax and control-flow blocks with code generators and a sandboxed client-side runtime for real-time evaluation and instant visual feedback, then deployed the completed app on Vercel.",
   },
   {
     id: "project-3",
@@ -44,6 +51,26 @@ export const projects: Project[] = [
     tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Gemini"],
     image: "/website.png",
     details:
-      "2026. Designed and built a personal portfolio that reimagines a resume as a Google search results page. Implemented full-text search over projects and experience, an AI Overview powered by the Gemini API, voice search, and a synchronized light/dark mode. Built with Next.js, React, TypeScript, and Tailwind CSS.",
+      "May 2026 - Present. Architected a multimodal portfolio that reimagines a resume as a Google search results page. Built with Next.js, React, TypeScript, and Tailwind CSS, it features typed, voice, and visual search with fuzzy ranking and typo tolerance. Eliminated redundant LLM calls and reduced repeat-query latency with a client-side session cache, pre-rendered summaries, and streamed Gemini API responses.",
+  },
+  {
+    id: "project-4",
+    title: "Open Source Poker Solver",
+    url: "github.com › davidvayn › pokersolver",
+    href: "https://github.com/davidvayn/pokersolver",
+    snippet:
+      "Rust CFR/neural Heads-Up No-Limit Hold'em trainer achieving <b>95.2% action-EV precision</b> and <b>100% policy-lookup coverage</b> across <b>114 automated tests</b>.",
+    tags: [
+      "Rust",
+      "CFR",
+      "Neural Networks",
+      "Next.js",
+      "TypeScript",
+      "IndexedDB",
+      "Poker",
+    ],
+    image: "",
+    details:
+      "Jul 2026 - Present. Engineered a full-stack Heads-Up No-Limit Hold'em trainer that integrates a high-performance Rust counterfactual regret minimization and neural solver with a Next.js gameplay interface. Achieved 95.2% action-EV precision and 100% policy-lookup coverage through compressed-model inference, exact card-removal logic, and deterministic betting-state trees. Built real-time expected-value feedback, adaptive drill modes, and IndexedDB session persistence while maintaining reliability across 114 automated tests.",
   },
 ];

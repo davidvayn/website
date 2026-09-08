@@ -35,7 +35,7 @@ export default function KnowledgePanel() {
           David Vayntrub
         </h2>
         <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-          Full-Stack Developer
+          Software Engineer &amp; CS Student
         </p>
       </div>
 
@@ -47,9 +47,8 @@ export default function KnowledgePanel() {
           className="text-sm leading-6"
           style={{ color: "var(--google-snippet)" }}
         >
-          Full-Stack Developer based in San Francisco, CA with 3 years of
-          experience building modern web applications. Specializes in React,
-          Next.js, Node.js, and TypeScript.
+          UC Riverside Computer Science student building full-stack, AI/ML,
+          and real-time systems with TypeScript, Python, and Rust.
         </p>
       </div>
 
@@ -58,9 +57,8 @@ export default function KnowledgePanel() {
         style={{ borderColor: "var(--border)" }}
       >
         <InfoRow label="Location" value="San Francisco, CA" />
-        <InfoRow label="Experience" value="3 years" />
-        <InfoRow label="Education" value="University of California, Riverside" />
-        <InfoRow label="Focus" value="Full-Stack Web Development" />
+        <InfoRow label="Education" value="UC Riverside · 2027" />
+        <InfoRow label="Focus" value="Full-Stack · AI/ML" />
       </div>
 
       <div

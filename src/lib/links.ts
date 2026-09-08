@@ -23,13 +23,18 @@ function stripTags(text: string): string {
  * defense: even though the registry is built entirely from owner-controlled
  * data, the resolved URL is rendered into an `<a href>` inside AI Overview
  * output, so we refuse anything that isn't a plain web/mail link or a
- * root-relative site path (blocks `javascript:`, `data:`, etc.).
+ * phone link, or root-relative site path (blocks `javascript:`, `data:`, etc.).
  */
 function isSafeUrl(url: string): boolean {
   if (url.startsWith("/")) return true; // internal, root-relative path
   try {
     const scheme = new URL(url).protocol;
-    return scheme === "https:" || scheme === "http:" || scheme === "mailto:";
+    return (
+      scheme === "https:" ||
+      scheme === "http:" ||
+      scheme === "mailto:" ||
+      scheme === "tel:"
+    );
   } catch {
     return false;
   }

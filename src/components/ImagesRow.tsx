@@ -20,6 +20,10 @@ function projectCaption(project: (typeof projects)[number]) {
     return "Google-styled portfolio with AI Overview search, built in Next.js";
   }
 
+  if (project.id === "project-4") {
+    return "Rust CFR/neural poker solver with real-time EV training feedback";
+  }
+
   return `${project.title} preview`;
 }
 
