@@ -6,6 +6,7 @@ export interface Project {
   snippet: string;
   tags: string[];
   image: string;
+  imageAlt?: string;
   details: string;
 }
 
@@ -72,5 +73,30 @@ export const projects: Project[] = [
     image: "",
     details:
       "Jul 2026 - Present. Engineered a full-stack Heads-Up No-Limit Hold'em trainer that integrates a high-performance Rust counterfactual regret minimization and neural solver with a Next.js gameplay interface. Achieved 95.2% action-EV precision and 100% policy-lookup coverage through compressed-model inference, exact card-removal logic, and deterministic betting-state trees. Built real-time expected-value feedback, adaptive drill modes, and IndexedDB session persistence while maintaining reliability across 114 automated tests.",
+  },
+  {
+    id: "project-5",
+    title: "PokerFly",
+    url: "pokerfly.vercel.app",
+    href: "https://pokerfly.vercel.app/",
+    snippet:
+      "Distilled a poker policy into a <b>56,752-parameter</b> FlyVis-constrained recurrent network, reaching <b>85.5% teacher top-action agreement</b> on held-out decisions.",
+    tags: [
+      "Python",
+      "PyTorch",
+      "React",
+      "TypeScript",
+      "Three.js",
+      "Vite",
+      "Machine Learning",
+      "Computational Neuroscience",
+      "FlyVis",
+      "FlyWire",
+    ],
+    image: "/pokerfly-preview.png",
+    imageAlt:
+      "PokerFly preview showing a luminous fly brain surrounded by poker cards",
+    details:
+      "Sep 2026 - Present. Built an experimental full-stack neural observatory that distills an existing poker policy into a recurrent PyTorch network constrained by FlyVis visual-system wiring. The 56,752-parameter student simulates 443 cells across 65 cell types and 7,698 directed edges, reaching 85.5% teacher top-action agreement and 0.0603 KL divergence on 435 held-out decisions after training on 1,613 decisions. Created a React, TypeScript, and Three.js interface that renders live network activity alongside an anatomical brain view built from 118,104 measured FlyWire soma positions, supports human-versus-fly and model-versus-fly play, and connects a Vercel frontend to a Railway-hosted Node and Python backend. PokerFly is a policy-imitation experiment, not a biological whole-brain simulation or a validated poker solver.",
   },
 ];

@@ -163,3 +163,34 @@ test('updated resume achievements are searchable and the PDF is downloadable', a
   expect(resumeResponse.ok()).toBe(true);
   expect(resumeResponse.headers()['content-type']).toContain('application/pdf');
 });
+
+test('PokerFly is searchable and uses its live product preview', async ({ page }) => {
+  await page.route('**/api/ai-search', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'text/plain; charset=utf-8',
+      body: 'David built PokerFly, a fly-inspired neural poker observatory.',
+    });
+  });
+
+  await page.goto('/?q=connectome');
+
+  const pokerFlyLink = page.getByRole('link', {
+    name: 'PokerFly',
+    exact: true,
+  });
+  await expect(pokerFlyLink.last()).toBeVisible();
+  await expect(pokerFlyLink.last()).toHaveAttribute(
+    'href',
+    'https://pokerfly.vercel.app/',
+  );
+  await expect(page.getByText(/56,752-parameter/)).toBeVisible();
+  await expect(page.getByText(/85\.5% teacher top-action agreement/)).toBeVisible();
+
+  await page.getByRole('button', { name: 'Images' }).click();
+  await expect(
+    page.getByAltText(
+      'PokerFly preview showing a luminous fly brain surrounded by poker cards',
+    ),
+  ).toBeVisible();
+});

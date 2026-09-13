@@ -9,5 +9,6 @@ export const suggestions: string[] = [
   "david vayntrub resume",
   "david vayntrub skills",
   "david vayntrub poker solver",
+  "david vayntrub pokerfly",
   "david vayntrub san francisco",
 ];

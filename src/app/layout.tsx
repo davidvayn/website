@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "David Vayntrub - Software Engineer",
   description:
-    "David Vayntrub is a UC Riverside Computer Science student and software engineer focused on full-stack development, AI/ML, and real-time systems.",
+    "David Vayntrub is a UC Riverside Computer Science student and software engineer focused on full-stack development, AI/ML, computational neuroscience, and real-time systems.",
   icons: {
     icon: "/favicon.svg",
     apple: {

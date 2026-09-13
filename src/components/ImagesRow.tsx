@@ -24,6 +24,10 @@ function projectCaption(project: (typeof projects)[number]) {
     return "Rust CFR/neural poker solver with real-time EV training feedback";
   }
 
+  if (project.id === "project-5") {
+    return "FlyVis-constrained poker network with live Three.js neural activity";
+  }
+
   return `${project.title} preview`;
 }
 
@@ -53,11 +57,15 @@ export default function ImagesRow() {
               !project.image.startsWith("/placeholder") ? (
                 <Image
                   src={project.image}
-                  alt={`${project.title} preview`}
+                  alt={project.imageAlt ?? `${project.title} preview`}
                   width={360}
                   height={270}
                   priority
-                  className="h-full w-full object-cover transition-transform group-hover:scale-[1.02]"
+                  className={`h-full w-full transition-transform group-hover:scale-[1.02] ${
+                    project.id === "project-5"
+                      ? "bg-[#020b16] object-contain"
+                      : "object-cover"
+                  }`}
                 />
               ) : (
                 <div className="text-center px-5">
