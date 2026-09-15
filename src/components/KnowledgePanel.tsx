@@ -35,16 +35,16 @@ export default function KnowledgePanel() {
           David Vayntrub
         </h2>
         <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-          Software Engineer &amp; CS Student
+          Software Engineer
         </p>
       </div>
 
       <div
-        className="border-t pt-4 mb-4"
+        className="border-t pt-4 mb-4 text-center"
         style={{ borderColor: "var(--border)" }}
       >
         <p
-          className="text-sm leading-6"
+          className="text-sm leading-6 text-center"
           style={{ color: "var(--google-snippet)" }}
         >
           UC Riverside Computer Science student building full-stack, AI/ML,

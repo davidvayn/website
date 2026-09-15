@@ -82,6 +82,9 @@ function SearchResults() {
     return result;
   }, [query, isBroadSearch]);
 
+  const pokerSolver = filteredProjects.find((p) => p.id === "project-4");
+  const otherProjects = filteredProjects.filter((p) => p.id !== "project-4");
+
   const showAll = activeFilter === "all";
   const showImages = activeFilter === "images";
   const showBlog = activeFilter === "blog";
@@ -152,8 +155,19 @@ function SearchResults() {
 
             {showAll && <SponsoredResult />}
 
-            {filteredExperiences.length > 0 && showAll && (
+            {showAll && (pokerSolver || filteredExperiences.length > 0) && (
               <>
+                {pokerSolver && (
+                  <OrganicResult
+                    key={pokerSolver.id}
+                    title={pokerSolver.title}
+                    url={pokerSolver.url}
+                    href={pokerSolver.href}
+                    snippet={pokerSolver.snippet}
+                    details={pokerSolver.details}
+                    tags={pokerSolver.tags}
+                  />
+                )}
                 {filteredExperiences.map((exp) => (
                   <OrganicResult
                     key={exp.id}
@@ -188,9 +202,9 @@ function SearchResults() {
 
             {showAll && <PeopleAlsoAsk />}
 
-            {filteredProjects.length > 0 && showAll && (
+            {otherProjects.length > 0 && showAll && (
               <>
-                {filteredProjects.map((project) => (
+                {otherProjects.map((project) => (
                   <OrganicResult
                     key={project.id}
                     title={project.title}

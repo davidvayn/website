@@ -194,3 +194,45 @@ test('PokerFly is searchable and uses its live product preview', async ({ page }
     ),
   ).toBeVisible();
 });
+
+test('homepage displays projects in the expected order and updates KnowledgePanel title', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  // Verify KnowledgePanel title below name
+  await expect(page.getByText('David Vayntrub', { exact: true })).toBeVisible();
+  const knowledgePanel = page.locator('aside');
+  await expect(knowledgePanel.getByText('Software Engineer', { exact: true })).toBeVisible();
+  await expect(knowledgePanel.getByText('Software Engineer & CS Student')).not.toBeVisible();
+  await expect(
+    knowledgePanel.getByText(
+      'UC Riverside Computer Science student building full-stack, AI/ML, and real-time systems with TypeScript, Python, and Rust.',
+    ),
+  ).toBeVisible();
+
+  // Verify homepage result order
+  const expectedOrder = [
+    'Open Source Poker Solver',
+    'Cofounding Engineer - StudySpot',
+    'Software Engineer - ACM Riverside Forge',
+    'Analysis of Machine Learning Methods with Regression',
+    'PokerFly',
+    'BitWizards',
+    'Personal Website',
+  ];
+
+  // In the search results column, locate all h3 headers that represent organic results
+  const resultHeadings = page.locator('main h3');
+  const count = await resultHeadings.count();
+  const actualTitles: string[] = [];
+  for (let i = 0; i < count; i++) {
+    const text = await resultHeadings.nth(i).innerText();
+    const cleanText = text.trim();
+    if (expectedOrder.includes(cleanText)) {
+      actualTitles.push(cleanText);
+    }
+  }
+
+  expect(actualTitles).toEqual(expectedOrder);
+});
