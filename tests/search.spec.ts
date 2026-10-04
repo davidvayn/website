@@ -148,9 +148,15 @@ test('updated resume achievements are searchable and the PDF is downloadable', a
 
   await page.goto('/?q=poker');
 
-  await expect(
-    page.getByRole('link', { name: 'Open Source Poker Solver', exact: true }),
-  ).toBeVisible();
+  const pokerSolverLink = page.getByRole('link', {
+    name: 'Open Source Poker Solver',
+    exact: true,
+  });
+  await expect(pokerSolverLink).toBeVisible();
+  await expect(pokerSolverLink).toHaveAttribute(
+    'href',
+    'https://pokersolver.vercel.app/',
+  );
   await expect(page.getByText(/95\.2% action-EV precision/)).toBeVisible();
   await expect(page.getByText(/100% policy-lookup coverage/)).toBeVisible();
   await expect(page.getByText(/114 automated tests/)).toBeVisible();

@@ -14,8 +14,8 @@ export const projects: Project[] = [
   {
     id: "project-4",
     title: "Open Source Poker Solver",
-    url: "github.com › davidvayn › pokersolver",
-    href: "https://github.com/davidvayn/pokersolver",
+    url: "pokersolver.vercel.app",
+    href: "https://pokersolver.vercel.app/",
     snippet:
       "Rust CFR/neural Heads-Up No-Limit Hold'em trainer achieving <b>95.2% action-EV precision</b> and <b>100% policy-lookup coverage</b> across <b>114 automated tests</b>.",
     tags: [
