@@ -27,7 +27,9 @@ export const projects: Project[] = [
       "IndexedDB",
       "Poker",
     ],
-    image: "",
+    image: "/pokersolver-solver-v2-dark.png",
+    imageAlt:
+      "Redesigned dark Poker Lab solver showing a flop, hand ranges, and combo-level strategy output",
     details:
       "Jul 2026 - Present. Engineered a full-stack Heads-Up No-Limit Hold'em trainer that integrates a high-performance Rust counterfactual regret minimization and neural solver with a Next.js gameplay interface. Achieved 95.2% action-EV precision and 100% policy-lookup coverage through compressed-model inference, exact card-removal logic, and deterministic betting-state trees. Built real-time expected-value feedback, adaptive drill modes, and IndexedDB session persistence while maintaining reliability across 114 automated tests.",
   },

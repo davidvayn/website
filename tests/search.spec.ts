@@ -162,6 +162,19 @@ test('updated resume achievements are searchable and the PDF is downloadable', a
   const resumeResponse = await page.request.get('/resume.pdf');
   expect(resumeResponse.ok()).toBe(true);
   expect(resumeResponse.headers()['content-type']).toContain('application/pdf');
+
+  const previewResponse = await page.request.get(
+    '/pokersolver-solver-v2-dark.png',
+  );
+  expect(previewResponse.ok()).toBe(true);
+  expect(previewResponse.headers()['content-type']).toContain('image/png');
+
+  await page.getByRole('button', { name: 'Images' }).click();
+  await expect(
+    page.getByAltText(
+      'Redesigned dark Poker Lab solver showing a flop, hand ranges, and combo-level strategy output',
+    ),
+  ).toBeVisible();
 });
 
 test('PokerFly is searchable and uses its live product preview', async ({ page }) => {
